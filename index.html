@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block title %}الرئيسية{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+  <!-- Hero Section -->
+  <div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 2rem; color: white;">
+    <div class="container">
+      <h1 class="display-4 fw-bold mb-3">مرحباً بك في Best One</h1>
+      <p class="lead mb-4">أفضل خدمات السيارات في المملكة</p>
+      {% if not current_user.is_authenticated %}
+      <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-3">ابدأ الآن</a>
+      {% endif %}
+      <a href="#services" class="btn btn-outline-light btn-lg">تصفح الخدمات</a>
+    </div>
+  </div>
+
+  <!-- عرض العروض بتصميم عصري -->
+  {% if offers %}
+  <div class="offers-section mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="gradient-text">العروض المميزة</h2>
+      <span class="badge bg-primary">{{ offers|length }} عرض</span>
+    </div>
+    
+    <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+      <div class="carousel-indicators">
+        {% for o in offers %}
+          <button type="button" data-bs-target="#offersCarousel" data-bs-slide-to="{{ loop.index0 }}"
+                  {% if loop.first %}class="active" aria-current="true"{% endif %}
+                  aria-label="Slide {{ loop.index }}"></button>
+        {% endfor %}
+      </div>
+
+      <div class="carousel-inner" style="height: 400px;">
+        {% for o in offers %}
+          <div class="carousel-item {% if loop.first %}active{% endif %}">
+            <a href="{{ url_for('book', service_id=o.service.id) if o.service else url_for('book') }}" class="d-block position-relative h-100">
+              
+              <!-- شارات العرض -->
+              <div class="position-absolute top-0 end-0 p-3" style="z-index: 2;">
+                {% if o.price is not none and o.service and o.service.price and (o.price|float) < (o.service.price|float) %}
+                  {% set discount = ((o.service.price|float - o.price|float) / (o.service.price|float) * 100) | round(0, 'floor') %}
+                  <span class="badge bg-danger fs-6 me-2">خصم {{ discount|int }}%</span>
+                {% endif %}
+                {% if loop.index <= 3 %}
+                  <span class="badge bg-success fs-6">جديد</span>
+                {% endif %}
+              </div>
+
+              {% if o.image_path %}
+                <img src="{{ url_for('static', filename=o.image_path) }}" 
+                     class="d-block w-100 h-100" 
+                     style="object-fit: cover;" 
+                     alt="{{ o.title }}">
+              {% else %}
+                <div class="d-flex align-items-center justify-content-center h-100" 
+                     style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+                  <div class="text-center">
+                    <i class="fas fa-star fs-1 text-warning mb-3"></i>
+                    <h3 class="text-dark">{{ o.title }}</h3>
+                    {% if o.price is not none %}
+                      <p class="fs-4 text-primary fw-bold">{{ o.price | currency }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+
+              <!-- معلومات العرض -->
+              <div class="carousel-caption">
+                <h5 class="fw-bold">{{ o.title }}</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                  {% if o.price is not none %}
+                    <span class="fs-5 fw-bold">{{ o.price | currency }}</span>
+                  {% endif %}
+                  {% if o.service and o.service.price and o.price and (o.price|float) < (o.service.price|float) %}
+                    <span class="text-decoration-line-through small">{{ o.service.price | currency }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- الخدمات بتصميم عصري -->
+<section id="services" class="services-section">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="gradient-text">خدماتنا المتميزة</h2>
+    <span class="badge bg-secondary">{{ services|length }} خدمة</span>
+  </div>
+  
+  <div class="row g-4">
+    {% for s in services %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 service-card reveal interactive">
+          {% if s.image_path %}
+            <div class="position-relative overflow-hidden">
+              <img src="{{ url_for('static', filename=s.image_path) }}" 
+                   class="card-img-top" 
+                   style="height: 200px; object-fit: cover; transition: transform 0.5s ease;" 
+                   alt="{{ s.name }}">
+              <div class="position-absolute top-0 start-0 p-3">
+                <span class="badge bg-primary">{{ s.duration_minutes }} دقيقة</span>
+              </div>
+            </div>
+          {% else %}
+            <div class="card-img-top d-flex align-items-center justify-content-center" 
+                 style="height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+              <i class="fas fa-car fs-1 text-white"></i>
+            </div>
+          {% endif %}
+          
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold">{{ s.name }}</h5>
+            
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <small class="text-muted">المدة</small>
+                <div class="fw-semibold">{{ s.duration_minutes }} دقيقة</div>
+              </div>
+              <div class="col-6">
+                <small class="text-muted">السعر</small>
+                <div class="fw-bold text-primary fs-5">{{ s.price | currency }}</div>
+                
+                <!-- جملة التقسيط البسيطة -->
+                {% if s.installment_available %}
+                <div class="small text-success mt-1">
+                  <i class="fas fa-credit-card me-1"></i>إمكانية التقسيط
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="mt-auto">
+              <a class="btn btn-primary w-100 btn-lg" href="{{ url_for('book', service_id=s.id) }}">
+                <i class="fas fa-calendar-plus me-2"></i>احجز الآن
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="col-12">
+        <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle fs-4 mb-3"></i>
+          <h5>لا توجد خدمات متاحة حالياً</h5>
+          <p class="mb-0">سنقوم بإضافة خدمات جديدة قريباً</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+  <!-- إحصائيات سريعة -->
+  <div class="stats-section mt-5 pt-5">
+    <div class="row g-4 text-center">
+      <div class="col-6 col-md-3">
+        <div class="card glass-effect text-white h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <div class="card-body">
+            <i class="fas fa-users fs-1 mb-3"></i>
+            <h3 class="fw-bold">1000+</h3>
+            <p class="mb-0">عميل راضٍ</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card glass-effect text-white h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <div class="card-body">
+            <i class="fas fa-car fs-1 mb-3"></i>
+            <h3 class="fw-bold">{{ services|length }}</h3>
+            <p class="mb-0">خدمة متميزة</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card glass-effect text-white h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <div class="card-body">
+            <i class="fas fa-star fs-1 mb-3"></i>
+            <h3 class="fw-bold">4.9</h3>
+            <p class="mb-0">تقييم العملاء</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card glass-effect text-white h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <div class="card-body">
+            <i class="fas fa-clock fs-1 mb-3"></i>
+            <h3 class="fw-bold">24/7</h3>
+            <p class="mb-0">خدمة العملاء</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+/* تأثيرات إضافية للصفحة الرئيسية */
+.service-card:hover img {
+  transform: scale(1.1);
+}
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  animation: float 20s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, -10px) rotate(1deg); }
+  66% { transform: translate(-5px, 5px) rotate(-1deg); }
+}
+
+.stats-section .card {
+  transition: all 0.3s ease;
+}
+
+.stats-section .card:hover {
+  transform: translateY(-5px) scale(1.05);
+}
+</style>
+
+<!-- Font Awesome للأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+{% endblock %}

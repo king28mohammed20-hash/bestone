@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+{% block title %}لوحة الإدارة{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="gradient-text">
+      <i class="fas fa-tachometer-alt me-2"></i>إدارة الحجوزات
+    </h3>
+    <div class="d-flex gap-2">
+      <span class="badge bg-warning">{{ pending|length }} قيد المراجعة</span>
+      <span class="badge bg-success">{{ approved|length }} معتمدة</span>
+      <span class="badge bg-secondary">{{ cancelled|length }} ملغاة</span>
+    </div>
+  </div>
+
+  <style>
+    .booking-card {
+      border-radius: 15px;
+      border: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+    
+    .booking-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .booking-header {
+      border-radius: 15px 15px 0 0;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .booking-body {
+      padding: 1.5rem;
+    }
+    
+    .car-info-badge {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+    
+    .status-pending { background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%); }
+    .status-approved { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); }
+    .status-cancelled { background: linear-gradient(135deg, #6c757d 0%, #495057 100%); }
+    
+    .action-btn {
+      border-radius: 8px;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.8rem;
+      margin: 0.2rem;
+      transition: all 0.2s ease;
+    }
+    
+    .action-btn:hover {
+      transform: translateY(-1px);
+    }
+    
+    .user-avatar {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      margin-left: 1rem;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+
+  <!-- قيد المراجعة -->
+  <div class="mb-5">
+    <h5 class="mb-3">
+      <i class="fas fa-clock text-warning me-2"></i>قيد المراجعة
+      <span class="badge bg-warning ms-2">{{ pending|length }}</span>
+    </h5>
+    
+    {% if pending %}
+    <div class="row">
+      {% for b in pending %}
+      <div class="col-lg-6 mb-3">
+        <div class="booking-card">
+          <div class="booking-header status-pending text-white">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center">
+                <div class="user-avatar">
+                  {{ b.user.full_name[0] }}
+                </div>
+                <div>
+                  <h6 class="mb-0">{{ b.user.full_name }}</h6>
+                  <small class="opacity-75">{{ b.user.phone }}</small>
+                </div>
+              </div>
+              <div class="text-center">
+                <div class="fs-5 fw-bold">#{{ b.id }}</div>
+                <small>رقم الحجز</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="booking-body">
+            <!-- معلومات الخدمة -->
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <strong class="text-primary">الخدمة:</strong><br>
+                <span class="fs-5">{{ b.service.name }}</span>
+              </div>
+              <div class="col-6">
+                <strong class="text-primary">الموعد:</strong><br>
+                <span class="fs-6">{{ b.appointment_at.strftime('%Y-%m-%d') }}</span><br>
+                <span class="text-muted">{{ b.appointment_at.strftime('%H:%M') }}</span>
+              </div>
+            </div>
+            
+            <!-- معلومات السيارة -->
+            {% if b.car_info %}
+            <div class="car-info-section mb-3">
+              <div class="car-info-badge">
+                <i class="fas fa-car me-2"></i>
+                {{ b.car_info.brand }} {{ b.car_info.model }}
+                {% if b.car_info.year %} - {{ b.car_info.year }}{% endif %}
+                {% if b.car_info.color %} - {{ b.car_info.color }}{% endif %}
+              </div>
+              {% if b.car_info.plate_number %}
+              <div class="small text-muted">
+                <i class="fas fa-id-card me-1"></i>لوحة: {{ b.car_info.plate_number }}
+              </div>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            <!-- الملاحظات -->
+            {% if b.notes %}
+            <div class="mb-3">
+              <strong class="text-secondary">ملاحظات:</strong>
+              <p class="small text-muted mb-0">{{ b.notes }}</p>
+            </div>
+            {% endif %}
+            
+            <!-- أزرار التحكم -->
+            <div class="d-flex flex-wrap gap-1">
+              <form method="post" action="{{ url_for('admin_approve', booking_id=b.id) }}" class="d-inline">
+                <button class="btn btn-success btn-sm action-btn">
+                  <i class="fas fa-check me-1"></i>اعتماد
+                </button>
+              </form>
+              <form method="post" action="{{ url_for('admin_cancel', booking_id=b.id) }}" class="d-inline">
+                <button class="btn btn-warning btn-sm action-btn">
+                  <i class="fas fa-times me-1"></i>إلغاء
+                </button>
+              </form>
+              <form method="post" action="{{ url_for('admin_delete', booking_id=b.id) }}" 
+                    onsubmit="return confirm('حذف نهائي؟ لا يمكن التراجع.');" class="d-inline">
+                <button class="btn btn-outline-danger btn-sm action-btn">
+                  <i class="fas fa-trash me-1"></i>حذف
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info border-0" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);">
+      <i class="fas fa-info-circle me-2"></i>لا توجد حجوزات قيد المراجعة.
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- المعتمدة -->
+  <div class="mb-5">
+    <h5 class="mb-3">
+      <i class="fas fa-check-circle text-success me-2"></i>المعتمدة
+      <span class="badge bg-success ms-2">{{ approved|length }}</span>
+    </h5>
+    
+    {% if approved %}
+    <div class="row">
+      {% for b in approved %}
+      <div class="col-lg-6 mb-3">
+        <div class="booking-card">
+          <div class="booking-header status-approved text-white">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center">
+                <div class="user-avatar">
+                  {{ b.user.full_name[0] }}
+                </div>
+                <div>
+                  <h6 class="mb-0">{{ b.user.full_name }}</h6>
+                  <small class="opacity-75">{{ b.user.phone }}</small>
+                </div>
+              </div>
+              <div class="text-center">
+                <div class="fs-5 fw-bold">#{{ b.id }}</div>
+                <small>رقم الحجز</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="booking-body">
+            <!-- معلومات الخدمة -->
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <strong class="text-primary">الخدمة:</strong><br>
+                <span class="fs-5">{{ b.service.name }}</span>
+              </div>
+              <div class="col-6">
+                <strong class="text-primary">الموعد:</strong><br>
+                <span class="fs-6">{{ b.appointment_at.strftime('%Y-%m-%d') }}</span><br>
+                <span class="text-muted">{{ b.appointment_at.strftime('%H:%M') }}</span>
+              </div>
+            </div>
+            
+            <!-- معلومات السيارة -->
+            {% if b.car_info %}
+            <div class="car-info-section mb-3">
+              <div class="car-info-badge">
+                <i class="fas fa-car me-2"></i>
+                {{ b.car_info.brand }} {{ b.car_info.model }}
+                {% if b.car_info.year %} - {{ b.car_info.year }}{% endif %}
+                {% if b.car_info.color %} - {{ b.car_info.color }}{% endif %}
+              </div>
+              {% if b.car_info.plate_number %}
+              <div class="small text-muted">
+                <i class="fas fa-id-card me-1"></i>لوحة: {{ b.car_info.plate_number }}
+              </div>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            <!-- الملاحظات -->
+            {% if b.notes %}
+            <div class="mb-3">
+              <strong class="text-secondary">ملاحظات:</strong>
+              <p class="small text-muted mb-0">{{ b.notes }}</p>
+            </div>
+            {% endif %}
+            
+            <!-- أزرار التحكم -->
+            <div class="d-flex flex-wrap gap-1">
+              <form method="post" action="{{ url_for('admin_cancel', booking_id=b.id) }}" class="d-inline">
+                <button class="btn btn-warning btn-sm action-btn">
+                  <i class="fas fa-times me-1"></i>إلغاء
+                </button>
+              </form>
+              <form method="post" action="{{ url_for('admin_reset', booking_id=b.id) }}" class="d-inline">
+                <button class="btn btn-secondary btn-sm action-btn">
+                  <i class="fas fa-undo me-1"></i>إرجاع لمراجعة
+                </button>
+              </form>
+              <form method="post" action="{{ url_for('admin_delete', booking_id=b.id) }}" 
+                    onsubmit="return confirm('حذف نهائي؟ لا يمكن التراجع.');" class="d-inline">
+                <button class="btn btn-outline-danger btn-sm action-btn">
+                  <i class="fas fa-trash me-1"></i>حذف
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info border-0" style="background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);">
+      <i class="fas fa-info-circle me-2"></i>لا توجد حجوزات معتمدة.
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- الملغاة -->
+  <div class="mb-5">
+    <h5 class="mb-3">
+      <i class="fas fa-ban text-secondary me-2"></i>الملغاة
+      <span class="badge bg-secondary ms-2">{{ cancelled|length }}</span>
+    </h5>
+    
+    {% if cancelled %}
+    <div class="row">
+      {% for b in cancelled %}
+      <div class="col-lg-6 mb-3">
+        <div class="booking-card">
+          <div class="booking-header status-cancelled text-white">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center">
+                <div class="user-avatar">
+                  {{ b.user.full_name[0] }}
+                </div>
+                <div>
+                  <h6 class="mb-0">{{ b.user.full_name }}</h6>
+                  <small class="opacity-75">{{ b.user.phone }}</small>
+                </div>
+              </div>
+              <div class="text-center">
+                <div class="fs-5 fw-bold">#{{ b.id }}</div>
+                <small>رقم الحجز</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="booking-body">
+            <!-- معلومات الخدمة -->
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <strong class="text-primary">الخدمة:</strong><br>
+                <span class="fs-5">{{ b.service.name }}</span>
+              </div>
+              <div class="col-6">
+                <strong class="text-primary">الموعد:</strong><br>
+                <span class="fs-6">{{ b.appointment_at.strftime('%Y-%m-%d') }}</span><br>
+                <span class="text-muted">{{ b.appointment_at.strftime('%H:%M') }}</span>
+              </div>
+            </div>
+            
+            <!-- معلومات السيارة -->
+            {% if b.car_info %}
+            <div class="car-info-section mb-3">
+              <div class="car-info-badge">
+                <i class="fas fa-car me-2"></i>
+                {{ b.car_info.brand }} {{ b.car_info.model }}
+                {% if b.car_info.year %} - {{ b.car_info.year }}{% endif %}
+                {% if b.car_info.color %} - {{ b.car_info.color }}{% endif %}
+              </div>
+              {% if b.car_info.plate_number %}
+              <div class="small text-muted">
+                <i class="fas fa-id-card me-1"></i>لوحة: {{ b.car_info.plate_number }}
+              </div>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            <!-- الملاحظات -->
+            {% if b.notes %}
+            <div class="mb-3">
+              <strong class="text-secondary">ملاحظات:</strong>
+              <p class="small text-muted mb-0">{{ b.notes }}</p>
+            </div>
+            {% endif %}
+            
+            <!-- أزرار التحكم -->
+            <div class="d-flex flex-wrap gap-1">
+              <form method="post" action="{{ url_for('admin_reset', booking_id=b.id) }}" class="d-inline">
+                <button class="btn btn-secondary btn-sm action-btn">
+                  <i class="fas fa-undo me-1"></i>إرجاع لمراجعة
+                </button>
+              </form>
+              <form method="post" action="{{ url_for('admin_delete', booking_id=b.id) }}" 
+                    onsubmit="return confirm('حذف نهائي؟ لا يمكن التراجع.');" class="d-inline">
+                <button class="btn btn-outline-danger btn-sm action-btn">
+                  <i class="fas fa-trash me-1"></i>حذف
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info border-0" style="background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);">
+      <i class="fas fa-info-circle me-2"></i>لا توجد حجوزات ملغاة.
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- Font Awesome للأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}

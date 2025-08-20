@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">{{ 'تعديل خدمة' if is_edit else 'خدمة جديدة' }}</h1>
+<form method="post" enctype="multipart/form-data" class="card card-body shadow-sm">
+  {{ form.hidden_tag() }}
+
+  <div class="mb-3">
+    {{ form.name.label(class="form-label") }}
+    {{ form.name(class="form-control") }}
+    {% for e in form.name.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.price.label(class="form-label") }}
+    {{ form.price(class="form-control") }}
+    {% for e in form.price.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+  </div>
+  
+  <div class="mb-3">
+    {{ form.duration_minutes.label(class="form-label") }}
+    {{ form.duration_minutes(class="form-control") }}
+    {% for e in form.duration_minutes.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+  </div>
+  
+  <div class="form-check mb-3">
+    {{ form.active(class="form-check-input", id="active") }}
+    <label class="form-check-label" for="active">مفعّلة</label>
+  </div>
+
+  <!-- خيار التقسيط البسيط -->
+  <div class="form-check mb-3">
+    {{ form.installment_available(class="form-check-input", id="installment") }}
+    <label class="form-check-label" for="installment">
+      <i class="fas fa-credit-card me-2 text-success"></i>إمكانية التقسيط
+    </label>
+    <div class="form-text">عند التفعيل، ستظهر جملة "إمكانية التقسيط" جنب السعر</div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">صورة الخدمة (اختياري)</label>
+    {{ form.image(class="form-control") }}
+    {% if is_edit and form._obj and form._obj.image_path %}
+      <div class="mt-2">
+        <img src="{{ url_for('static', filename=form._obj.image_path) }}" style="max-width:140px" class="img-thumbnail">
+      </div>
+    {% endif %}
+  </div>
+
+  {{ form.submit(class="btn btn-primary") }}
+  <a href="{{ url_for('admin_services') }}" class="btn btn-secondary ms-2">رجوع</a>
+</form>
+
+<!-- Font Awesome للأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}{{ 'تعديل مستخدم' if is_edit else 'إضافة مستخدم' }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h4 class="mb-0">
+            {% if is_edit %}
+              <i class="fas fa-user-edit me-2"></i>تعديل بيانات: {{ user.full_name }}
+            {% else %}
+              <i class="fas fa-user-plus me-2"></i>إضافة مستخدم جديد
+            {% endif %}
+          </h4>
+        </div>
+        
+        <div class="card-body">
+          <form method="post">
+            {{ form.hidden_tag() }}
+
+            <!-- الاسم الكامل -->
+            <div class="mb-3">
+              {{ form.full_name.label(class="form-label") }}
+              {{ form.full_name(class="form-control") }}
+              {% for e in form.full_name.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+            </div>
+
+            <!-- رقم الهاتف -->
+            <div class="mb-3">
+              {{ form.phone.label(class="form-label") }}
+              {{ form.phone(class="form-control", placeholder="05xxxxxxxx أو +966xxxxxxxxx") }}
+              {% for e in form.phone.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+            </div>
+
+            <!-- كلمة المرور (للإضافة فقط) -->
+            {% if not is_edit %}
+            <div class="mb-3">
+              {{ form.password.label(class="form-label") }}
+              {{ form.password(class="form-control") }}
+              {% for e in form.password.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- الصلاحيات -->
+            <div class="card bg-light mb-3">
+              <div class="card-header">
+                <h6 class="mb-0">الصلاحيات والحالة</h6>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  {% if is_edit %}
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      {{ form.is_active(class="form-check-input", id="is_active") }}
+                      <label class="form-check-label" for="is_active">
+                        <i class="fas fa-user-check me-2 text-success"></i>المستخدم نشط
+                      </label>
+                      <div class="form-text">إلغاء التفعيل سيمنع المستخدم من تسجيل الدخول</div>
+                    </div>
+                  </div>
+                  {% endif %}
+                  
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      {{ form.is_admin(class="form-check-input", id="is_admin") }}
+                      <label class="form-check-label" for="is_admin">
+                        <i class="fas fa-user-shield me-2 text-warning"></i>صلاحيات إدارية
+                      </label>
+                      <div class="form-text">الوصول للوحة الإدارة</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ملاحظات إدارية -->
+            <div class="mb-3">
+              {{ form.notes.label(class="form-label") }}
+              {{ form.notes(class="form-control", rows="3", placeholder="ملاحظات داخلية للإدارة...") }}
+              {% for e in form.notes.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+            </div>
+
+            <!-- معلومات إضافية (للتعديل فقط) -->
+            {% if is_edit %}
+            <div class="card bg-info bg-opacity-10 mb-3">
+              <div class="card-body">
+                <h6 class="card-title">معلومات إضافية</h6>
+                <div class="row g-3 small">
+                  <div class="col-md-4">
+                    <strong>رقم المستخدم:</strong> #{{ user.id }}
+                  </div>
+                  <div class="col-md-4">
+                    <strong>تاريخ التسجيل:</strong> {{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'غير محدد' }}
+                  </div>
+                  <div class="col-md-4">
+                    <strong>عدد الحجوزات:</strong> {{ user.get_bookings_count() }}
+                  </div>
+                  <div class="col-md-4">
+                    <strong>آخر دخول:</strong> 
+                    {% if user.last_login %}
+                      {{ user.last_login.strftime('%Y-%m-%d %H:%M') }}
+                    {% else %}
+                      لم يسجل دخول
+                    {% endif %}
+                  </div>
+                  {% set last_booking = user.get_last_booking() %}
+                  {% if last_booking %}
+                  <div class="col-md-8">
+                    <strong>آخر حجز:</strong> 
+                    {{ last_booking.service.name }} - {{ last_booking.appointment_at.strftime('%Y-%m-%d') }}
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- أزرار الحفظ -->
+            <div class="d-flex gap-2">
+              {{ form.submit(class="btn btn-primary") }}
+              <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">رجوع</a>
+              
+              {% if is_edit and user.id != current_user.id %}
+                <div class="ms-auto">
+                  <form method="post" action="{{ url_for('admin_user_reset_password', user_id=user.id) }}" class="d-inline">
+                    <button type="submit" class="btn btn-outline-warning" 
+                            onclick="return confirm('سيتم تعيين كلمة المرور إلى 123456')">
+                      <i class="fas fa-key me-1"></i>إعادة تعيين كلمة المرور
+                    </button>
+                  </form>
+                </div>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Font Awesome للأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4">إدارة الخدمات</h1>
+  <a class="btn btn-primary" href="{{ url_for('admin_service_new') }}">+ خدمة جديدة</a>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped align-middle">
+    <thead><tr><th>#</th><th>الصورة</th><th>الاسم</th><th>السعر</th><th>المدة</th><th>الحالة</th><th>تحكم</th></tr></thead>
+    <tbody>
+      {% for s in items %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td>
+          {% set img = s.image_path or 'uploads/placeholder.svg' %}
+          <img src="{{ url_for('static', filename=img) }}" class="img-thumbnail" style="max-width:70px">
+        </td>
+        <td>{{ s.name }}</td>
+        <td>{{ s.price|currency }}</td>
+        <td>{{ s.duration_minutes }} د</td>
+        <td>{% if s.active %}<span class="badge text-bg-success">مفعّلة</span>{% else %}<span class="badge text-bg-secondary">متوقفة</span>{% endif %}</td>
+        <td>
+          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_service_edit', service_id=s.id) }}">تعديل</a>
+          <form method="post" action="{{ url_for('admin_service_delete', service_id=s.id) }}" class="d-inline" onsubmit="return confirm('حذف الخدمة؟');">
+            <button class="btn btn-sm btn-outline-danger">حذف</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="text-center text-muted">لا توجد خدمات.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

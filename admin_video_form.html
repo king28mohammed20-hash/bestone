@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ 'تعديل' if is_edit else 'إضافة' }} فيديو{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h3 class="mb-3">{{ 'تعديل' if is_edit else 'إضافة' }} فيديو</h3>
+
+  <form method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+      <label class="form-label">العنوان</label>
+      {{ form.title(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">الوصف (اختياري)</label>
+      {{ form.description(class="form-control", rows="3") }}
+    </div>
+
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">المصدر</label>
+        {{ form.source(class="form-select") }}
+      </div>
+      <div class="col-md-8">
+        <label class="form-label">رابط يوتيوب</label>
+        {{ form.youtube_url(class="form-control", placeholder="https://youtu.be/VIDEO_ID أو رابط يوتيوب كامل") }}
+        <div class="form-text">يُستخدم فقط إذا كان المصدر “يوتيوب”.</div>
+      </div>
+    </div>
+
+    <div class="mb-3 mt-3">
+      <label class="form-label">ملف الفيديو (MP4)</label>
+      {{ form.video_file(class="form-control") }}
+      <div class="form-text">يُستخدم فقط إذا كان المصدر “MP4”.</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">صورة الغلاف (اختياري)</label>
+      {{ form.poster(class="form-control") }}
+    </div>
+
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label class="form-label">ترتيب</label>
+        {{ form.sort(class="form-control") }}
+      </div>
+      <div class="col-md-3 d-flex align-items-center gap-3">
+        <div class="form-check">
+          {{ form.active(class="form-check-input", id="fActive") }}
+          <label class="form-check-label" for="fActive">فعّال</label>
+        </div>
+        <div class="form-check">
+          {{ form.featured(class="form-check-input", id="fFeat") }}
+          <label class="form-check-label" for="fFeat">مميّز</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn btn-primary">{{ 'حفظ التعديلات' if is_edit else 'إضافة' }}</button>
+      <a class="btn btn-light ms-2" href="{{ url_for('admin_videos') }}">رجوع</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
