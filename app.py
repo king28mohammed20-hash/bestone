@@ -1599,6 +1599,34 @@ def show_offers():
             print(f"   - {offer.title} ({status}) - ID: {offer.id}")
     except Exception as e:
         print(f"❌ خطأ: {e}")
-
+# إنشاء الجداول عند بدء التطبيق
+with app.app_context():
+    db.create_all()
+    
+    # إضافة بيانات أولية إذا لم تكن موجودة
+    if not db.session.scalar(db.select(User).where(User.is_admin == True)):
+        # إنشاء مدير افتراضي
+        admin = User(
+            full_name="المدير الرئيسي",
+            phone="+966501234567",
+            is_admin=True
+        )
+        admin.set_password("admin123")
+        db.session.add(admin)
+        
+        # إضافة خدمات أولية
+        services = [
+            Service(name="تظليل", price=35, duration_minutes=60, active=True),
+            Service(name="نانو سيراميك", price=120, duration_minutes=180, active=True),
+            Service(name="تلميع داخلي", price=50, duration_minutes=90, active=True),
+        ]
+        db.session.add_all(services)
+        
+        # إنشاء معلومات اتصال أولية
+        contact = ContactInfo()
+        db.session.add(contact)
+        
+        db.session.commit()
 if __name__ == "__main__":
+
     app.run(debug=True)
