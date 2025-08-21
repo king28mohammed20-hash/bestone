@@ -60,7 +60,7 @@ body {
 .theme-toggle {
   position: fixed;
   top: 20px;
-  left: 20px;
+  right: 20px;
   z-index: 1050;
   width: 50px;
   height: 25px;
@@ -353,7 +353,7 @@ body {
 @media (max-width: 768px) {
   .theme-toggle {
     top: 15px;
-    left: 15px;
+    right: 15px;
     width: 45px;
     height: 22px;
   }
@@ -464,4 +464,5 @@ a, button, .btn, .nav-link, .social-float {
 .custom-cursor,
 .custom-cursor-dot {
   display: none !important;
+
 }
