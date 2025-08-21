@@ -488,38 +488,42 @@ a, button, .btn, .nav-link, .social-float {
 
 
 
-
-/* إصلاح لون النصوص في صفحة الحجز */
-.container h3,
-.container h4,
-.container h5,
-.container p {
-  color: var(--text-primary) !important;
+/* فرض لون النص الداكن في الوضع النهاري */
+body,
+.container,
+.card,
+.card-body,
+.card-header {
+  color: #333333 !important;
 }
 
-/* للتأكد من ظهور النصوص في الوضع النهاري */
-body {
-  color: #1e293b !important;
+/* كل العناوين والنصوص */
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: #333333 !important;
 }
 
-/* النصوص الرئيسية */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-primary) !important;
+/* استهداف مباشر للنص الأبيض */
+.text-white,
+.text-light {
+  color: #333333 !important;
 }
 
-/* في الوضع الليلي */
-[data-theme="dark"] body {
-  color: #f8fafc !important;
+/* للوضع الليلي فقط */
+[data-theme="dark"] body,
+[data-theme="dark"] .container,
+[data-theme="dark"] .card,
+[data-theme="dark"] .card-body,
+[data-theme="dark"] .card-header,
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] div {
+  color: #ffffff !important;
 }
-
-[data-theme="dark"] h1, 
-[data-theme="dark"] h2, 
-[data-theme="dark"] h3, 
-[data-theme="dark"] h4, 
-[data-theme="dark"] h5, 
-[data-theme="dark"] h6 {
-  color: #f8fafc !important;
-}
-
 
 
