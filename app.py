@@ -584,7 +584,7 @@ def get_booked_slots(date):
         return jsonify([])
 
 @app.route("/book", methods=["GET","POST"])
-@limiter.limit("10 per hour")  # 10 حجوزات كل ساعة
+@limiter.limit("100 per hour")  # 10 حجوزات كل ساعة
 @login_required
 def book():
     form = CarBookingForm()
@@ -1630,3 +1630,4 @@ with app.app_context():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
