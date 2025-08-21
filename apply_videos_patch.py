@@ -194,8 +194,8 @@ def upgrade_db():
     db.create_all()
     print("✅ DB upgraded (created missing tables).")
 """
-NAV_PUBLIC = "<li class=\"nav-item\"><a class=\"nav-link\" href=\"{{ url_for('videos_page') }}\">فيديوهاتنا</a></li>"
-NAV_ADMIN  = "<li class=\"nav-item\"><a class=\"nav-link\" href=\"{{ url_for('admin_videos') }}\">إدارة الفيديو</a></li>"
+NAV_PUBLIC = '<li class="nav-item"><a class="nav-link" href="{{ url_for(\\'videos_page\\') }}">فيديوهاتنا</a></li>'
+NAV_ADMIN  = '<li class="nav-item"><a class="nav-link" href="{{ url_for(\\'admin_videos\\') }}">إدارة الفيديو</a></li>'
 
 def patch_app_py(app_py_path):
     s = open(app_py_path, "r", encoding="utf-8").read()
@@ -251,14 +251,14 @@ def patch_base_html(base_html_path):
         m = re.search(r"<ul[^>]*navbar-nav[^>]*>.*?</ul>", s, re.S)
         if m:
             whole = m.group(0)
-            new = whole.replace("</ul>", "  " + NAV_PUBLIC + "\n</ul>")
+            new = whole.replace("</ul>", f"  {NAV_PUBLIC}\\n</ul>")
             s = s.replace(whole, new)
             changed = True
 
     if "url_for('admin_videos')" not in s:
         # try to insert inside admin-only block if exists
         if "{% if current_user.is_authenticated" in s:
-            s = s.replace("{% endif %}", "  " + NAV_ADMIN + "\n{% endif %}", 1)
+            s = s.replace("{% endif %}", f"  {NAV_ADMIN}\\n{% endif %}", 1)
             changed = True
         else:
             m = re.search(r"<ul[^>]*navbar-nav[^>]*>.*?</ul>", s, re.S)
