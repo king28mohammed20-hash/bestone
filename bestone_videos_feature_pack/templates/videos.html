@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}فيديوهاتنا{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h3 class="mb-3">فيديوهات من شغلنا</h3>
+
+  <div class="row g-4">
+    {% for v in items %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="ratio ratio-16x9">
+            {% if v.source == 'youtube' and v.youtube_id %}
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/{{ v.youtube_id }}?rel=0&modestbranding=1"
+                title="{{ v.title }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen loading="lazy"></iframe>
+            {% elif v.source == 'mp4' and v.file_path %}
+              <video controls preload="metadata" {% if v.poster_path %}poster="{{ url_for('static', filename=v.poster_path) }}"{% endif %}>
+                <source src="{{ url_for('static', filename=v.file_path) }}" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو.
+              </video>
+            {% else %}
+              <div class="d-flex align-items-center justify-content-center bg-light">لا يمكن عرض الفيديو</div>
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <h6 class="card-title mb-1">{{ v.title }}</h6>
+            {% if v.description %}<p class="card-text small text-muted">{{ v.description }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="col-12">
+        <div class="alert alert-info">لا توجد فيديوهات حتى الآن.</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

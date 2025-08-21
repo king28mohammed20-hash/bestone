@@ -1,0 +1,540 @@
+/* ===== المتغيرات العصرية ===== */
+:root{
+  /* ألوان أساسية عصرية */
+  --brand-primary: #6366f1;     /* أزرق بنفسجي */
+  --brand-secondary: #8b5cf6;   /* بنفسجي */
+  --brand-accent: #06b6d4;      /* سماوي */
+  --brand-success: #10b981;     /* أخضر */
+  --brand-warning: #f59e0b;     /* برتقالي */
+  --brand-danger: #ef4444;      /* أحمر */
+  
+  /* تدرجات */
+  --gradient-primary: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+  --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  
+  /* ظلال عصرية */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.3);
+  
+  /* انحناءات */
+  --rounded-sm: 0.5rem;
+  --rounded-md: 0.75rem;
+  --rounded-lg: 1rem;
+  --rounded-xl: 1.5rem;
+  --rounded-2xl: 2rem;
+  
+  /* مساحات */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+}
+
+/* ===== إعدادات عامة محسنة ===== */
+* {
+  scroll-behavior: smooth;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+body {
+  font-family: "Tajawal", "Cairo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #1e293b;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* ===== Navbar عصري مع تأثيرات ===== */
+.navbar {
+  background: var(--gradient-primary) !important;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #ffffff !important;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+.navbar-brand img {
+  height: 40px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500;
+  padding: 0.75rem 1rem !important;
+  border-radius: var(--rounded-md);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.nav-link:hover::before {
+  left: 0;
+}
+
+.nav-link:hover {
+  color: #ffffff !important;
+  transform: translateY(-2px);
+}
+
+/* ===== بطاقات عصرية ثلاثية الأبعاد ===== */
+.card {
+  background: var(--gradient-card);
+  border: 0;
+  border-radius: var(--rounded-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-xl);
+}
+
+.card-title {
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: var(--spacing-sm);
+}
+
+.card-text {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ===== أزرار عصرية مع تأثيرات ===== */
+.btn {
+  border-radius: var(--rounded-lg);
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--brand-success) 0%, #059669 100%);
+  color: #ffffff;
+}
+
+.btn-outline-primary {
+  border: 2px solid var(--brand-primary);
+  color: var(--brand-primary);
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background: var(--brand-primary);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* ===== نماذج عصرية ===== */
+.form-control {
+  border: 2px solid #e2e8f0;
+  border-radius: var(--rounded-lg);
+  padding: 0.875rem 1rem;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: var(--spacing-xs);
+}
+
+/* ===== تأثيرات السلايدر ===== */
+.carousel {
+  border-radius: var(--rounded-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.carousel-inner {
+  border-radius: var(--rounded-2xl);
+}
+
+.carousel-item img {
+  border-radius: var(--rounded-2xl);
+  transition: transform 0.5s ease;
+}
+
+.carousel-item:hover img {
+  transform: scale(1.05);
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: var(--rounded-lg);
+  padding: var(--spacing-md);
+  bottom: 2rem;
+}
+
+/* ===== جداول عصرية ===== */
+.table {
+  background: #ffffff;
+  border-radius: var(--rounded-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table thead th {
+  background: var(--gradient-primary);
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  padding: 1rem;
+}
+
+.table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+  transform: scale(1.01);
+}
+
+/* ===== شارات عصرية ===== */
+.badge {
+  border-radius: var(--rounded-md);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.bg-success {
+  background: var(--brand-success) !important;
+}
+
+.bg-warning {
+  background: var(--brand-warning) !important;
+}
+
+.bg-danger {
+  background: var(--brand-danger) !important;
+}
+
+/* ===== تنبيهات عصرية ===== */
+.alert {
+  border: none;
+  border-radius: var(--rounded-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border-left-color: var(--brand-success);
+  color: #065f46;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-left-color: var(--brand-warning);
+  color: #92400e;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  border-left-color: var(--brand-danger);
+  color: #991b1b;
+}
+
+/* ===== واتساب عائم محسن ===== */
+.wa-float {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  box-shadow: var(--shadow-glow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wa-float:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+}
+
+/* ===== فوتر عصري ===== */
+footer {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: #94a3b8;
+  padding: var(--spacing-xl) 0;
+  margin-top: var(--spacing-xl);
+}
+
+/* ===== أنيميشن الظهور ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* ===== تأثيرات الماوس ===== */
+.interactive {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.interactive:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== متجاوب للموبايل ===== */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .btn {
+    width: 100%;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+  
+  .carousel-caption {
+    font-size: 0.875rem;
+    padding: var(--spacing-sm);
+  }
+}
+
+/* ===== تأثيرات الحركة المتقدمة ===== */
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    animation: pulse 2s infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: var(--shadow-md);
+  }
+  50% {
+    box-shadow: var(--shadow-xl);
+  }
+}
+
+/* ===== تحسينات إضافية ===== */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* أضف هذا CSS في static/css/theme.css */
+
+/* تحسين عرض صور العروض */
+/* أضف هذا CSS في نهاية static/css/theme.css مع !important */
+
+/* فرض عرض الصور كاملة - بقوة! */
+.carousel-item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #ffffff !important;
+  border-radius: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+/* تأكيد خلفية السلايدر */
+.carousel-inner {
+  background: #f8f9fa !important;
+  height: 350px !important;
+}
+
+.carousel-item {
+  height: 100% !important;
+  background: #ffffff !important;
+}
+
+/* للتأكد من عدم وجود تداخل مع Bootstrap */
+.carousel-item > a {
+  height: 100% !important;
+  display: block !important;
+  background: #ffffff !important;
+}
+
+/* إصلاح محتمل لتداخل الـ CSS */
+.carousel .carousel-inner .carousel-item img {
+  object-fit: contain !important;
+  background: #ffffff !important;
+}
+
+/* تجربة بديلة - استخدام max-width و max-height */
+.carousel-item img.contain-fit {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: auto !important;
+  display: block !important;
+}/* تحسين العرض البديل (بدون صورة) */
+.offer-placeholder {
+  height: 350px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+/* تحسين معلومات العرض */
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+}
+
+/* تجاوب للموبايل */
+@media (max-width: 768px) {
+  .carousel-inner {
+    height: 250px;
+  }
+  
+  .carousel-caption {
+    padding: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* تأثيرات hover للصور */
+.carousel-item img:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+
+/* شارات العروض */
+.offer-badges {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.offer-badges .badge {
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
