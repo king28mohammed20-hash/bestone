@@ -487,7 +487,7 @@ a, button, .btn, .nav-link, .social-float {
 
 
 
-
+ظ*
 /* فرض لون النص الداكن في الوضع النهاري */
 body,
 .container,
@@ -525,5 +525,17 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 [data-theme="dark"] div {
   color: #ffffff !important;
 }
+*/
+
+/* حل بسيط ونهائي للألوان */
+body {
+  color: #2d3748 !important;
+}
+
+[data-theme="dark"] body {
+  color: #e2e8f0 !important;
+}
+
+/* هذا كل شيء - لا تضيف أي كود ألوان آخر */
 
 
