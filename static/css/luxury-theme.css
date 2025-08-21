@@ -46,7 +46,24 @@
 html {
   scroll-behavior: smooth;
 }
+/* إصلاح زر الهامبورغر في الجوال */
+.navbar-toggler {
+  border: 2px solid #333 !important;
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
 
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* للوضع الليلي */
+[data-theme="dark"] .navbar-toggler {
+  border-color: #fff !important;
+}
+
+[data-theme="dark"] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
 body {
   font-family: "Tajawal", system-ui, sans-serif;
   background: var(--bg-primary);
@@ -466,4 +483,5 @@ a, button, .btn, .nav-link, .social-float {
   display: none !important;
 
 }
+
 
