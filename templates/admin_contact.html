@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}بيانات التواصل{% endblock %}
+{% block content %}
+<div class="container my-4">
+  <h3 class="mb-3">تعديل بيانات التواصل وحسابات السوشيال ميديا</h3>
+  <form method="post" novalidate>
+    {{ form.csrf_token }}
+
+    <!-- بيانات التواصل الأساسية -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">بيانات التواصل الأساسية</h5>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">الهاتف</label>
+            {{ form.phone(class="form-control", placeholder="05xxxxxxxx") }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">واتساب</label>
+            {{ form.whatsapp(class="form-control", placeholder="05xxxxxxxx") }}
+          </div>
+          <div class="col-12">
+            <label class="form-label">الإيميل</label>
+            {{ form.email(class="form-control", placeholder="name@example.com") }}
+          </div>
+          <div class="col-12">
+            <label class="form-label">العنوان</label>
+            {{ form.address(class="form-control", placeholder="الحي - الشارع - الوصف المختصر") }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- حسابات السوشيال ميديا -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">حسابات السوشيال ميديا</h5>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">
+              <i class="fab fa-snapchat-ghost text-warning me-2"></i>سناب شات
+            </label>
+            {{ form.snapchat(class="form-control", placeholder="username") }}
+            <div class="form-text">اسم المستخدم فقط بدون @</div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">
+              <i class="fab fa-instagram text-danger me-2"></i>انستغرام
+            </label>
+            {{ form.instagram(class="form-control", placeholder="username") }}
+            <div class="form-text">اسم المستخدم فقط بدون @</div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">
+              <i class="fab fa-tiktok text-dark me-2"></i>تيك توك
+            </label>
+            {{ form.tiktok(class="form-control", placeholder="username") }}
+            <div class="form-text">اسم المستخدم فقط بدون @</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- الموقع والخريطة -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">الموقع والخريطة</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label">رابط الموقع على الخريطة (Google Maps)</label>
+          {{ form.location_url(class="form-control", placeholder="https://maps.google.com/?q=...") }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">كود الخريطة (iframe اختياري)</label>
+          {{ form.map_embed(class="form-control", rows="4", placeholder='<iframe src="..."></iframe>') }}
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg">حفظ جميع البيانات</button>
+    <a href="{{ url_for('contact_page') }}" class="btn btn-light btn-lg ms-2">رجوع</a>
+  </form>
+</div>
+{% endblock %}

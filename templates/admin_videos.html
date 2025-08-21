@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}إدارة الفيديو{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="m-0">إدارة الفيديو</h3>
+    <a class="btn btn-primary btn-sm" href="{{ url_for('admin_video_new') }}">+ إضافة فيديو</a>
+  </div>
+
+  {% if items %}
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>#</th><th>العنوان</th><th>المصدر</th><th>ترتيب</th><th>حالة</th><th>مميّز</th><th>أُضيف</th><th>إجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in items %}
+        <tr>
+          <td>{{ v.id }}</td>
+          <td>{{ v.title }}</td>
+          <td>{{ 'YouTube' if v.source=='youtube' else 'MP4' }}</td>
+          <td>{{ v.sort }}</td>
+          <td><span class="badge {{ 'bg-success' if v.active else 'bg-secondary' }}">{{ 'فعّال' if v.active else 'غير فعّال' }}</span></td>
+          <td>{{ '✓' if v.featured else '—' }}</td>
+          <td>{{ v.created_at.strftime('%Y-%m-%d') }}</td>
+          <td class="actions">
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_video_edit', video_id=v.id) }}">تعديل</a>
+            <form method="post" action="{{ url_for('admin_video_delete', video_id=v.id) }}" style="display:inline" onsubmit="return confirm('حذف نهائي؟');">
+              <button class="btn btn-sm btn-outline-danger">حذف</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="alert alert-info">لا توجد فيديوهات حتى الآن.</div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}حجوزاتي{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>حجوزاتي</h3>
+    <a href="{{ url_for('book') }}" class="btn btn-primary">حجز جديد</a>
+  </div>
+
+  {% if items %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>الخدمة</th>
+          <th>السيارة</th>
+          <th>التاريخ والوقت</th>
+          <th>الحالة</th>
+          <th>ملاحظات</th>
+          <th>إجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in items %}
+        <tr>
+          <td>{{ b.id }}</td>
+          <td>{{ b.service.name }}</td>
+          <td>
+            {% if b.car_info %}
+              <strong>{{ b.car_info.brand }} {{ b.car_info.model }}</strong>
+              {% if b.car_info.year %}<br><small>{{ b.car_info.year }}</small>{% endif %}
+              {% if b.car_info.color %}<br><small>{{ b.car_info.color }}</small>{% endif %}
+            {% else %}
+              غير محدد
+            {% endif %}
+          </td>
+          <td>{{ b.appointment_at.strftime("%Y-%m-%d %H:%M") }}</td>
+          <td>
+            {% if b.status == 'approved' %}
+              <span class="badge bg-success">مؤكد</span>
+            {% elif b.status == 'cancelled' %}
+              <span class="badge bg-secondary">ملغي</span>
+            {% else %}
+              <span class="badge bg-warning">قيد الانتظار</span>
+            {% endif %}
+          </td>
+          <td>{{ b.notes or "-" }}</td>
+          <td>
+            {% if b.status == 'pending' %}
+              <form method="post" action="{{ url_for('delete_my_booking', booking_id=b.id) }}" 
+                    style="display: inline;" 
+                    onsubmit="return confirm('هل أنت متأكد من حذف هذا الحجز؟')">
+                <button type="submit" class="btn btn-sm btn-outline-danger">
+                  <i class="fas fa-trash me-1"></i>حذف
+                </button>
+              </form>
+            {% else %}
+              <span class="text-muted small">لا يمكن الحذف</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center">
+    <h5>لا توجد حجوزات</h5>
+    <p>ابدأ بحجز موعدك الأول</p>
+    <a href="{{ url_for('book') }}" class="btn btn-primary">احجز الآن</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

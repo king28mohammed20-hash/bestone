@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">{{ 'تعديل إعلان' if is_edit else 'إعلان جديد' }}</h1>
+<form method="post" enctype="multipart/form-data" class="card card-body shadow-sm">
+  {{ form.hidden_tag() }}
+
+  <div class="mb-3">{{ form.title.label(class="form-label") }}{{ form.title(class="form-control") }}</div>
+  <div class="mb-3">{{ form.description.label(class="form-label") }}{{ form.description(class="form-control", rows="3") }}</div>
+  <div class="mb-3">{{ form.price.label(class="form-label") }}{{ form.price(class="form-control") }}</div>
+  <div class="mb-3">
+    {{ form.service_id.label(class="form-label") }}
+    {{ form.service_id(class="form-select") }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">صورة الإعلان (اختياري)</label>
+    {{ form.image(class="form-control") }}
+    {% if form._obj and form._obj.image_path %}
+      <div class="mt-2">
+        <img src="{{ url_for('static', filename=form.__obj.image_path) }}" style="max-width:140px" class="img-thumbnail">
+      </div>
+    {% endif %}
+  </div>
+
+  {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

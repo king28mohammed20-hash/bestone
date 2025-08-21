@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}تواصل وموقعنا{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="m-0">تواصل وموقعنا</h3>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+      <a class="btn btn-sm btn-primary" href="{{ url_for('admin_contact') }}">تعديل بيانات التواصل</a>
+    {% endif %}
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">معلومات التواصل</h5>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><strong>الهاتف:</strong> {{ contact.phone or "—" }}</li>
+            <li class="mb-2"><strong>واتساب:</strong> {{ contact.whatsapp or "—" }}</li>
+            <li class="mb-2"><strong>الإيميل:</strong> {{ contact.email or "—" }}</li>
+            <li class="mb-2"><strong>العنوان:</strong> {{ contact.address or "—" }}</li>
+            {% if contact.location_url %}
+            <li class="mt-2">
+              <a class="btn btn-outline-primary btn-sm" href="{{ contact.location_url }}" target="_blank" rel="noopener">فتح الموقع على الخريطة</a>
+            </li>
+            {% endif %}
+          </ul>
+          <div class="text-muted small">يُمكن للمدير تعديل البيانات.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">الخريطة</h5>
+          {% if contact.map_embed %}
+            <div class="ratio ratio-16x9">
+              {{ contact.map_embed | safe }}
+            </div>
+          {% else %}
+            <div class="alert alert-info mb-0">
+              لم يتم إدخال كود الخريطة بعد. أضفه من صفحة الإدارة (<code>/admin/contact</code>) لعرض الخريطة هنا.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

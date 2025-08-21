@@ -1,0 +1,468 @@
+{% extends "base.html" %}
+{% block title %}حجز موعد{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-gradient text-white text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <h3 class="mb-0">
+            <i class="fas fa-calendar-plus me-2"></i>حجز موعد جديد
+          </h3>
+          <p class="mb-0 mt-2 opacity-75">املأ البيانات أدناه لحجز موعدك</p>
+        </div>
+
+        <div class="card-body p-4">
+          <!-- تنبيه أيام العطل -->
+          <div class="alert alert-info border-0 mb-4" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-info-circle fs-4 me-3 text-primary"></i>
+              <div>
+                <strong>ساعات العمل:</strong> من 1:00 ظهراً إلى 10:00 مساءً<br>
+                <strong>أيام الإغلاق:</strong> الجمعة
+              </div>
+            </div>
+          </div>
+
+          <form method="post" id="bookingForm">
+            {{ form.hidden_tag() }}
+            
+            <!-- قسم الخدمة والموعد -->
+            <div class="section-card mb-4">
+              <h5 class="section-title">
+                <i class="fas fa-concierge-bell me-2 text-primary"></i>تفاصيل الخدمة والموعد
+              </h5>
+              
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label fw-bold">اختر الخدمة <span class="text-danger">*</span></label>
+                  {{ form.service_id(class="form-select form-select-lg") }}
+                  {% for e in form.service_id.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">التاريخ <span class="text-danger">*</span></label>
+                  {{ form.date(class="form-control form-control-lg", id="dateInput") }}
+                  <div class="form-text">
+                    <i class="fas fa-calendar-times text-danger me-1"></i>نحن مغلقون أيام الجمعة
+                  </div>
+                  {% for e in form.date.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">الوقت <span class="text-danger">*</span></label>
+                  {{ form.time(class="form-select form-select-lg") }}
+                  <div class="form-text">آخر موعد يبدأ الساعة 9:30 مساءً</div>
+                  {% for e in form.time.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                </div>
+              </div>
+            </div>
+
+            <!-- قسم معلومات السيارة -->
+            <div class="section-card mb-4">
+              <h5 class="section-title">
+                <i class="fas fa-car me-2 text-success"></i>معلومات السيارة
+              </h5>
+              
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">نوع السيارة <span class="text-danger">*</span></label>
+                  {{ form.car_brand(class="form-select form-select-lg", id="carBrand") }}
+                  {% for e in form.car_brand.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">الموديل <span class="text-danger">*</span></label>
+                  {{ form.car_model(class="form-control form-control-lg", id="carModel") }}
+<datalist id="carModelsList"></datalist>
+                  {% for e in form.car_model.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}
+                </div>
+                
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">سنة الصنع</label>
+                  {{ form.car_year(class="form-select") }}
+                  <div class="form-text">اختياري</div>
+                </div>
+                
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">لون السيارة</label>
+                  {{ form.car_color(class="form-select") }}
+                  <div class="form-text">اختياري</div>
+                </div>
+                
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">رقم اللوحة</label>
+                  {{ form.plate_number(class="form-control", placeholder="مثال: أ ب ج 1234") }}
+                  <div class="form-text">اختياري</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- قسم الملاحظات -->
+            <div class="section-card mb-4">
+              <h5 class="section-title">
+                <i class="fas fa-sticky-note me-2 text-warning"></i>ملاحظات إضافية
+              </h5>
+              
+              <div class="col-12">
+                {{ form.notes(class="form-control", rows="4", placeholder="أي ملاحظات أو طلبات خاصة تريد إضافتها... (اختياري)") }}
+                <div class="form-text">مثل: تنظيف من الداخل، عناية خاصة بالجنوط، إلخ</div>
+              </div>
+            </div>
+
+            <!-- أزرار التحكم -->
+            <div class="d-flex gap-3 justify-content-center">
+              <button type="submit" class="btn btn-success btn-lg px-5" id="submitBtn">
+                <i class="fas fa-check-circle me-2"></i>تأكيد الحجز
+              </button>
+              <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg px-4">
+                <i class="fas fa-arrow-left me-2"></i>رجوع
+              </a>
+            </div>
+            
+            <!-- تنبيه ديناميكي للجمعة -->
+            <div id="fridayWarning" class="alert alert-warning mt-4 d-none">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle fs-4 me-3"></i>
+                <div>
+                  <strong>تنبيه:</strong> التاريخ المحدد يوم جمعة ونحن مغلقون. الرجاء اختيار يوم آخر.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.section-card {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.section-title {
+  color: #495057;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.form-control, .form-select {
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
+  transform: translateY(-1px);
+}
+
+.form-select-lg {
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.btn-outline-secondary {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.alert {
+  border-radius: 15px;
+  border: none;
+}
+
+.text-danger {
+  font-weight: 500;
+}
+
+.form-text {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.card {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.card-header {
+  border: none;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .section-card {
+    padding: 1rem;
+  }
+  
+  .card-body {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.form-loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.form-loading .btn {
+  position: relative;
+}
+
+.form-loading .btn::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  border: 2px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const dateInput = document.getElementById('dateInput');
+  const fridayWarning = document.getElementById('fridayWarning');
+  const submitBtn = document.getElementById('submitBtn');
+  const carBrand = document.getElementById('carBrand');
+  const carModel = document.getElementById('carModel');
+  const form = document.getElementById('bookingForm');
+  const timeSelect = document.querySelector('select[name="time"]');
+
+  // تعيين الحد الأدنى للتاريخ (اليوم)
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+
+  // فحص يوم الجمعة
+  function checkFriday() {
+    if (!dateInput.value) return;
+    
+    const selectedDate = new Date(dateInput.value);
+    const dayOfWeek = selectedDate.getDay();
+    
+    if (dayOfWeek === 5) { // الجمعة
+      fridayWarning.classList.remove('d-none');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-ban me-2"></i>لا يمكن الحجز - يوم مغلق';
+      submitBtn.classList.remove('btn-success');
+      submitBtn.classList.add('btn-danger');
+      dateInput.classList.add('is-invalid');
+    } else {
+      fridayWarning.classList.add('d-none');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i>تأكيد الحجز';
+      submitBtn.classList.remove('btn-danger');
+      submitBtn.classList.add('btn-success');
+      dateInput.classList.remove('is-invalid');
+    }
+  }
+
+  // تحديث الأوقات المحجوزة
+  function updateAvailableSlots(bookedSlots = []) {
+    Array.from(timeSelect.options).forEach(option => {
+      option.disabled = false;
+      option.style.color = '';
+      option.style.backgroundColor = '';
+      option.text = option.value;
+      
+      if (bookedSlots.includes(option.value)) {
+        option.disabled = true;
+        option.style.color = '#999';
+        option.style.backgroundColor = '#f5f5f5';
+        option.text = option.value + ' (محجوز)';
+      }
+    });
+  }
+
+  dateInput.addEventListener('change', function() {
+    checkFriday();
+    
+    // تحديث الأوقات المحجوزة
+    const selectedDate = this.value;
+    if (selectedDate) {
+      fetch(`/api/booked-slots/${selectedDate}`)
+        .then(response => response.json())
+        .then(bookedSlots => updateAvailableSlots(bookedSlots))
+        .catch(() => updateAvailableSlots([]));
+    }
+  });
+
+  checkFriday();
+
+  // تحديث موديلات السيارة
+  carBrand.addEventListener('change', function() {
+    const selectedBrand = this.value;
+    const modelField = document.getElementById('carModel');
+    const datalist = document.getElementById('carModelsList');
+    
+    console.log('Selected brand:', selectedBrand);
+    
+    if (!selectedBrand) {
+        modelField.value = '';
+        modelField.placeholder = 'اختر نوع السيارة أولاً';
+        datalist.innerHTML = '';
+        return;
+    }
+    
+    modelField.placeholder = 'جاري التحميل...';
+    modelField.disabled = true;
+
+    fetch(`/api/car-models/${encodeURIComponent(selectedBrand)}`)
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(models => {
+            console.log('Models received:', models);
+            
+            // مسح الخيارات السابقة
+            datalist.innerHTML = '';
+            
+            // إضافة الموديلات الجديدة
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                datalist.appendChild(option);
+            });
+            
+            modelField.placeholder = 'اختر أو اكتب الموديل';
+            modelField.disabled = false;
+            modelField.focus();
+            
+            console.log('Models loaded successfully');
+        })
+        .catch(error => {
+            console.error('Error loading models:', error);
+            modelField.placeholder = 'خطأ في التحميل - حاول مرة أخرى';
+            modelField.disabled = false;
+            datalist.innerHTML = '';
+        });
+  });
+
+  // تأثير الإرسال
+  form.addEventListener('submit', function(e) {
+    if (!submitBtn.disabled) {
+      form.classList.add('form-loading');
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري الحجز...';
+      submitBtn.disabled = true;
+    }
+  });
+
+  // تحسين تجربة المستخدم
+  const inputs = document.querySelectorAll('input, select, textarea');
+  inputs.forEach(input => {
+    input.addEventListener('focus', function() {
+      this.parentElement.classList.add('focused');
+    });
+    
+    input.addEventListener('blur', function() {
+      this.parentElement.classList.remove('focused');
+    });
+  });
+});
+</script>
+  // تأثير الإرسال
+  form.addEventListener('submit', function(e) {
+    if (!submitBtn.disabled) {
+      form.classList.add('form-loading');
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري الحجز...';
+      submitBtn.disabled = true;
+    }
+  });
+
+  // تحسين تجربة المستخدم
+  const inputs = document.querySelectorAll('input, select, textarea');
+  inputs.forEach(input => {
+    input.addEventListener('focus', function() {
+      this.parentElement.classList.add('focused');
+    });
+    
+    input.addEventListener('blur', function() {
+      this.parentElement.classList.remove('focused');
+    });
+  });
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const bookedSlots = {{ booked_slots | tojson | safe }};
+    const dateInput = document.getElementById('dateInput');
+    const timeSelect = document.querySelector('select[name="time"]');
+    
+    function updateAvailableSlots() {
+        // إعادة تعيين جميع الخيارات للحالة العادية
+        Array.from(timeSelect.options).forEach(option => {
+            option.disabled = false;
+            option.style.color = '';
+            option.style.backgroundColor = '';
+            option.text = option.value;
+        });
+        
+        // تلوين الأوقات المحجوزة
+        if (bookedSlots && bookedSlots.length > 0) {
+            Array.from(timeSelect.options).forEach(option => {
+                if (bookedSlots.includes(option.value)) {
+                    option.disabled = true;
+                    option.style.color = '#999';
+                    option.style.backgroundColor = '#f5f5f5';
+                    option.text = option.value + ' (محجوز)';
+                }
+            });
+        }
+    }
+    
+    // تطبيق التلوين عند تحميل الصفحة
+    updateAvailableSlots();
+    
+    // تحديث الأوقات عند تغيير التاريخ
+    dateInput.addEventListener('change', function() {
+        // هنا يمكن إضافة AJAX لجلب الأوقات المحجوزة للتاريخ الجديد
+        updateAvailableSlots();
+    });
+});
+</script>
+{% endblock %}

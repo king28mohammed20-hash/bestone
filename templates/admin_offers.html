@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4">إدارة العروض/الإعلانات</h1>
+  <a class="btn btn-primary" href="{{ url_for('admin_offer_new') }}">+ إعلان جديد</a>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead><tr><th>#</th><th>الصورة</th><th>العنوان</th><th>السعر</th><th>الخدمة</th><th>الحالة</th><th>تحكم</th></tr></thead>
+    <tbody>
+      {% for o in items %}
+      <tr>
+        <td>{{ o.id }}</td>
+        <td>
+          {% set img = o.image_path or 'uploads/placeholder.svg' %}
+          <img src="{{ url_for('static', filename=img) }}" class="img-thumbnail" style="max-width:70px">
+        </td>
+        <td>{{ o.title }}</td>
+        <td>{{ o.price|currency if o.price is not none else '-' }}</td>
+        <td>{{ o.service.name if o.service else '-' }}</td>
+        <td>{% if o.active %}<span class="badge text-bg-success">مفعل</span>{% else %}<span class="badge text-bg-secondary">موقوف</span>{% endif %}</td>
+        <td>
+          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_offer_edit', offer_id=o.id) }}">تعديل</a>
+          <form method="post" action="{{ url_for('admin_offer_delete', offer_id=o.id) }}" class="d-inline" onsubmit="return confirm('حذف الإعلان؟');">
+            <button class="btn btn-sm btn-outline-danger">حذف</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="text-center text-muted">لا توجد إعلانات.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
