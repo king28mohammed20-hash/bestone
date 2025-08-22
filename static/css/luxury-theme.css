@@ -558,3 +558,12 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 }*/
 
 
+/* إخفاء الأزرار المكررة - إبقاء واحد فقط */
+.back-to-top:not(:first-of-type) {
+  display: none !important;
+}
+
+/* أو استهداف محدد */
+.scroll-top + .scroll-top {
+  display: none !important;
+}
