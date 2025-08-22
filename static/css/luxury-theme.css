@@ -557,13 +557,12 @@ h1, h2, h3, h4, h5, h6, p, span, div {
   color: #ffffff !important;
 }*/
 
-
-/* إخفاء الأزرار المكررة - إبقاء واحد فقط */
-.back-to-top:not(:first-of-type) {
-  display: none !important;
-}
-
-/* أو استهداف محدد */
-.scroll-top + .scroll-top {
-  display: none !important;
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 80px !important; /* رفع زر العودة للأعلى */
+  }
+  
+  .wa-float {
+    bottom: 20px !important; /* إبقاء واتساب في الأسفل */
+  }
 }
