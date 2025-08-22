@@ -556,12 +556,5 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 .statistics-container .text-white {
   color: #ffffff !important;
 }*/
-/* استهداف كل النصوص البيضاء في الكونتينرات الملونة */
-.bg-primary *,
-.bg-success *,
-.bg-info *,
-.bg-warning *,
-.bg-danger * {
-  color: #ffffff !important;
-}
+
 
