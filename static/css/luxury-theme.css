@@ -528,7 +528,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 */
 
 /* حل بسيط ونهائي للألوان */
-body {
+/*body {
   color: #2d3748 !important;
 }
 
@@ -554,6 +554,14 @@ body {
 /* أو استهداف الكونتينر الخاص بالإحصائيات */
 .row .col-md-4 .text-white,
 .statistics-container .text-white {
+  color: #ffffff !important;
+}*/
+/* استهداف كل النصوص البيضاء في الكونتينرات الملونة */
+.bg-primary *,
+.bg-success *,
+.bg-info *,
+.bg-warning *,
+.bg-danger * {
   color: #ffffff !important;
 }
 
