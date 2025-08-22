@@ -557,12 +557,49 @@ h1, h2, h3, h4, h5, h6, p, span, div {
   color: #ffffff !important;
 }*/
 
+
+
+
+
+
+
+/* تصغير مربع نص العروض */
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 15px !important;
+  padding: 1rem !important; /* بدلاً من 1.5rem */
+  bottom: 1rem !important; /* رفعه قليلاً من الأسفل */
+  left: 1rem !important;
+  right: 1rem !important;
+  max-height: 25% !important; /* تحديد أقصى ارتفاع */
+}
+
+/* تصغير النص داخل المربع */
+.carousel-caption h5 {
+  font-size: 1.1rem !important; /* بدلاً من حجم أكبر */
+  margin-bottom: 0.5rem !important;
+}
+
+.carousel-caption p {
+  font-size: 0.9rem !important;
+  margin-bottom: 0 !important;
+  line-height: 1.3 !important;
+}
+
+/* للجوال - مربع أصغر */
 @media (max-width: 768px) {
-  .back-to-top {
-    bottom: 80px !important; /* رفع زر العودة للأعلى */
+  .carousel-caption {
+    padding: 0.8rem !important;
+    bottom: 0.8rem !important;
+    max-height: 20% !important;
   }
   
-  .wa-float {
-    bottom: 20px !important; /* إبقاء واتساب في الأسفل */
+  .carousel-caption h5 {
+    font-size: 1rem !important;
+  }
+  
+  .carousel-caption p {
+    font-size: 0.8rem !important;
   }
 }
