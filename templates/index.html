@@ -7,8 +7,8 @@
   <!-- Hero Section -->
   <div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 2rem; color: white;">
     <div class="container">
-      <h1 class="display-4 fw-bold mb-3">مرحباً بك في Best One</h1>
-      <p class="lead mb-4">أفضل خدمات السيارات في المملكة</p>
+      <h1 class="display-4 fw-bold mb-3" style="color: white !important;">مرحباً بك في Best One</h1>
+      <p class="lead mb-4" style="color: white !important;">أفضل خدمات السيارات في المملكة</p>
       {% if not current_user.is_authenticated %}
       <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-3">ابدأ الآن</a>
       {% endif %}
@@ -163,7 +163,7 @@
   </div>
 </section>
   <!-- إحصائيات سريعة -->
-  <div class="stats-section mt-5 pt-5">
+  <div class="stats-section mt-5 pt-5" style="color: white !important;">
     <div class="row g-4 text-center">
       <div class="col-6 col-md-3">
         <div class="card glass-effect text-white h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -246,5 +246,6 @@
 
 <!-- Font Awesome للأيقونات -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 
 {% endblock %}
