@@ -538,4 +538,22 @@ body {
 
 /* هذا كل شيء - لا تضيف أي كود ألوان آخر */
 
+.stats-section .text-white,
+.statistics .text-white,
+.counter-section .text-white {
+  color: #ffffff !important;
+}
+
+/* أو إذا كانت في بطاقات محددة */
+.bg-primary .text-white,
+.bg-success .text-white,
+.bg-info .text-white {
+  color: #ffffff !important;
+}
+
+/* أو استهداف الكونتينر الخاص بالإحصائيات */
+.row .col-md-4 .text-white,
+.statistics-container .text-white {
+  color: #ffffff !important;
+}
 
