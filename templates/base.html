@@ -16,12 +16,12 @@
   <!-- Font Awesome للأيقونات -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- CSS Files 
+  <!-- CSS Files
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}"> 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/luxury-theme.css') }}">-->
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/unified-theme.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/luxury-theme.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/unified-theme.css') }}">
+  
   <!-- Meta Tags للـ SEO -->
   <meta name="description" content="Best One - أفضل خدمات السيارات في المملكة">
   <meta name="keywords" content="سيارات, تظليل, نانو سيراميك, حماية">
@@ -31,462 +31,156 @@
 <body data-theme="light">
   
   <!-- Navbar بسيط ومضمون الشغل -->
-<nav class="navbar navbar-expand-lg luxury-navbar fixed-top">
-  <div class="container">
-    <!-- اللوغو والعلامة التجارية -->
-    <a class="navbar-brand luxury-brand d-flex align-items-center" href="{{ url_for('index') }}">
-      <div class="brand-logo-container me-2">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <!-- اللوغو مع الشعار في الأعلى -->
+      <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
         <img src="{{ url_for('static', filename='logo.png') }}" 
              alt="Best One Logo" 
-             class="brand-logo">
+             style="height: 50px; width: auto; max-width: 100px; object-fit: contain; filter: none;">
+        <span class="fw-bold">Best One</span>
+      </a>
+
+      <!-- زر القائمة للموبايل -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- القائمة -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <!-- روابط الإدارة المُصلحة -->
+          {% if current_user.is_authenticated and current_user.is_admin %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" 
+               href="#" 
+               id="adminDropdown" 
+               role="button" 
+               data-bs-toggle="dropdown" 
+               aria-expanded="false"
+               style="cursor: pointer;">
+              <i class="fas fa-cog me-2"></i>الإدارة
+              <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i>
+            </a>
+            <!-- قائمة الإدارة -->
+            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+              <li>
+                <h6 class="dropdown-header">
+                  <i class="fas fa-shield-alt me-2"></i>لوحة الإدارة
+                </h6>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('admin_home') }}">
+                  <i class="fas fa-tachometer-alt me-2 text-primary"></i>لوحة التحكم
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('admin_users') }}">
+                  <i class="fas fa-users me-2 text-success"></i>المستخدمين
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('admin_services') }}">
+                  <i class="fas fa-concierge-bell me-2 text-info"></i>الخدمات
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('admin_offers') }}">
+                  <i class="fas fa-tags me-2 text-warning"></i>العروض
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('admin_videos') }}">
+                  <i class="fas fa-video me-2 text-danger"></i>الفيديوهات
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('admin_contact') }}">
+                  <i class="fas fa-address-book me-2 text-secondary"></i>بيانات التواصل
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% endif %}
+
+          <!-- الروابط العامة -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('videos_page') }}">
+              <i class="fas fa-play-circle me-2"></i>فيديوهاتنا
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('contact_page') }}">
+              <i class="fas fa-map-marker-alt me-2"></i>تواصل معنا
+            </a>
+          </li>
+        </ul>
+
+        <!-- روابط المستخدم -->
+        <ul class="navbar-nav">
+          {% if current_user.is_authenticated %}
+          <!-- قائمة المستخدم المُصلحة -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" 
+               href="#" 
+               id="userDropdown" 
+               role="button" 
+               data-bs-toggle="dropdown" 
+               aria-expanded="false"
+               style="cursor: pointer;">
+              <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2" 
+                   style="width: 35px; height: 35px;">
+                <i class="fas fa-user text-white" style="font-size: 0.9rem;"></i>
+              </div>
+              <span class="d-none d-md-inline">{{ current_user.full_name }}</span>
+              <i class="fas fa-chevron-down ms-1" style="font-size: 0.8rem;"></i>
+            </a>
+            <!-- القائمة المنسدلة -->
+            <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="userDropdown">
+              <li>
+                <h6 class="dropdown-header">
+                  <i class="fas fa-user me-2"></i>{{ current_user.full_name }}
+                </h6>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('my_bookings') }}">
+                  <i class="fas fa-calendar-check me-2 text-primary"></i>حجوزاتي
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('change_password') }}">
+                  <i class="fas fa-key me-2 text-warning"></i>تغيير كلمة المرور
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                  <i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% else %}
+          <!-- روابط غير المسجلين -->
+          <li class="nav-item">
+            <a class="nav-link btn btn-outline-light me-2 px-3" href="{{ url_for('login') }}">
+              <i class="fas fa-sign-in-alt me-2"></i>دخول
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-primary px-3" href="{{ url_for('register') }}">
+              <i class="fas fa-user-plus me-2"></i>تسجيل
+            </a>
+          </li>
+          {% endif %}
+        </ul>
       </div>
-      <div class="brand-text">
-        <span class="brand-name">Best One</span>
-        <small class="brand-tagline">Premium Car Services</small>
-      </div>
-    </a>
-
-    <!-- زر القائمة للموبايل -->
-    <button class="navbar-toggler luxury-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="toggler-line"></span>
-      <span class="toggler-line"></span>
-      <span class="toggler-line"></span>
-    </button>
-
-    <!-- القائمة الرئيسية -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
-        <!-- روابط الإدارة -->
-        {% if current_user.is_authenticated and current_user.is_admin %}
-        <li class="nav-item dropdown luxury-dropdown">
-          <a class="nav-link dropdown-toggle luxury-nav-link admin-link" 
-             href="#" 
-             id="adminDropdown" 
-             role="button" 
-             data-bs-toggle="dropdown">
-            <i class="fas fa-crown me-2"></i>
-            <span>الإدارة</span>
-            <i class="fas fa-chevron-down ms-1"></i>
-          </a>
-          <ul class="dropdown-menu luxury-dropdown-menu">
-            <li class="dropdown-header">
-              <i class="fas fa-shield-alt me-2"></i>لوحة التحكم
-            </li>
-            <li><hr class="dropdown-divider luxury-divider"></li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item" href="{{ url_for('admin_home') }}">
-                <i class="fas fa-tachometer-alt me-2"></i>الحجوزات
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item" href="{{ url_for('admin_users') }}">
-                <i class="fas fa-users me-2"></i>المستخدمين
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item" href="{{ url_for('admin_services') }}">
-                <i class="fas fa-concierge-bell me-2"></i>الخدمات
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item" href="{{ url_for('admin_offers') }}">
-                <i class="fas fa-tags me-2"></i>العروض
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item" href="{{ url_for('admin_videos') }}">
-                <i class="fas fa-video me-2"></i>الفيديوهات
-              </a>
-            </li>
-            <li><hr class="dropdown-divider luxury-divider"></li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item" href="{{ url_for('admin_contact') }}">
-                <i class="fas fa-address-book me-2"></i>بيانات التواصل
-              </a>
-            </li>
-          </ul>
-        </li>
-        {% endif %}
-
-        <!-- الروابط العامة -->
-        <li class="nav-item">
-          <a class="nav-link luxury-nav-link" href="{{ url_for('videos_page') }}">
-            <i class="fas fa-play-circle me-2"></i>فيديوهاتنا
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link luxury-nav-link" href="{{ url_for('contact_page') }}">
-            <i class="fas fa-map-marker-alt me-2"></i>تواصل معنا
-          </a>
-        </li>
-      </ul>
-
-      <!-- روابط المستخدم -->
-      <ul class="navbar-nav">
-        {% if current_user.is_authenticated %}
-        <!-- قائمة المستخدم -->
-        <li class="nav-item dropdown luxury-dropdown">
-          <a class="nav-link dropdown-toggle luxury-nav-link user-link" 
-             href="#" 
-             id="userDropdown" 
-             role="button" 
-             data-bs-toggle="dropdown">
-            <div class="user-avatar me-2">
-              <i class="fas fa-user"></i>
-            </div>
-            <span class="d-none d-md-inline">{{ current_user.full_name }}</span>
-            <i class="fas fa-chevron-down ms-1"></i>
-          </a>
-          <ul class="dropdown-menu luxury-dropdown-menu dropdown-menu-end">
-            <li class="dropdown-header">
-              <i class="fas fa-user-circle me-2"></i>{{ current_user.full_name }}
-            </li>
-            <li><hr class="dropdown-divider luxury-divider"></li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item" href="{{ url_for('my_bookings') }}">
-                <i class="fas fa-calendar-check me-2"></i>حجوزاتي
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item" href="{{ url_for('change_password') }}">
-                <i class="fas fa-key me-2"></i>تغيير كلمة المرور
-              </a>
-            </li>
-            <li><hr class="dropdown-divider luxury-divider"></li>
-            <li>
-              <a class="dropdown-item luxury-dropdown-item text-danger" href="{{ url_for('logout') }}">
-                <i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج
-              </a>
-            </li>
-          </ul>
-        </li>
-        {% else %}
-        <!-- روابط غير المسجلين -->
-        <li class="nav-item me-2">
-          <a class="nav-link btn btn-outline-luxury px-3 py-2" href="{{ url_for('login') }}">
-            <i class="fas fa-sign-in-alt me-2"></i>دخول
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link btn btn-luxury px-3 py-2" href="{{ url_for('register') }}">
-            <i class="fas fa-user-plus me-2"></i>تسجيل
-          </a>
-        </li>
-        {% endif %}
-      </ul>
     </div>
-  </div>
-</nav>
-<!-- CSS للنافبار الفاخر -->
-<style>
-/* النافبار الفاخر */
-.luxury-navbar {
-  background: linear-gradient(135deg, 
-    rgba(10, 10, 10, 0.95) 0%, 
-    rgba(26, 26, 46, 0.95) 100%
-  ) !important;
-  backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  padding: 0.8rem 0;
-}
+  </nav>
 
-.luxury-navbar.scrolled {
-  background: rgba(10, 10, 10, 0.98) !important;
-  padding: 0.5rem 0;
-}
-
-/* العلامة التجارية */
-.luxury-brand {
-  color: #ffffff !important;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.luxury-brand:hover {
-  color: #ffffff !important;
-  transform: scale(1.02);
-}
-
-.brand-logo-container {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.brand-logo-container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-  transform: rotate(45deg);
-  transition: all 0.6s ease;
-}
-
-.luxury-brand:hover .brand-logo-container::before {
-  animation: shine 0.8s ease-in-out;
-}
-
-@keyframes shine {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-}
-
-.brand-logo {
-  height: 35px;
-  width: auto;
-  filter: brightness(0) invert(1);
-  position: relative;
-  z-index: 2;
-}
-
-.brand-text {
-  line-height: 1.2;
-}
-
-.brand-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  display: block;
-}
-
-.brand-tagline {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 300;
-  display: block;
-  margin-top: -2px;
-}
-
-/* زر التبديل للموبايل */
-.luxury-toggler {
-  border: none;
-  padding: 8px 12px;
-  background: rgba(212, 175, 55, 0.1);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  position: relative;
-  width: 45px;
-  height: 40px;
-}
-
-.luxury-toggler:hover {
-  background: rgba(212, 175, 55, 0.2);
-  transform: scale(1.05);
-}
-
-.toggler-line {
-  display: block;
-  width: 25px;
-  height: 2px;
-  background: #d4af37;
-  margin: 5px 0;
-  transition: all 0.3s ease;
-  border-radius: 2px;
-}
-
-.luxury-toggler[aria-expanded="true"] .toggler-line:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px);
-}
-
-.luxury-toggler[aria-expanded="true"] .toggler-line:nth-child(2) {
-  opacity: 0;
-}
-
-.luxury-toggler[aria-expanded="true"] .toggler-line:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
-}
-
-/* روابط التنقل */
-.luxury-nav-link {
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-weight: 500;
-  padding: 0.7rem 1.2rem !important;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  position: relative;
-  margin: 0 0.2rem;
-}
-
-.luxury-nav-link::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
-  border-radius: 10px;
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
-.luxury-nav-link:hover::before {
-  opacity: 1;
-}
-
-.luxury-nav-link:hover {
-  color: #ffffff !important;
-  transform: translateY(-1px);
-}
-
-.admin-link {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-}
-
-.admin-link:hover {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(255, 215, 0, 0.2) 100%);
-}
-
-/* قائمة المستخدم */
-.user-avatar {
-  width: 35px;
-  height: 35px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-/* القوائم المنسدلة */
-.luxury-dropdown-menu {
-  background: rgba(15, 15, 30, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  border-radius: 15px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-  padding: 0.8rem 0;
-  margin-top: 0.5rem;
-  min-width: 240px;
-}
-
-.luxury-dropdown-item {
-  color: rgba(255, 255, 255, 0.9) !important;
-  padding: 0.8rem 1.5rem !important;
-  transition: all 0.3s ease;
-  border-radius: 0;
-  font-weight: 500;
-}
-
-.luxury-dropdown-item:hover {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%) !important;
-  color: #ffffff !important;
-  transform: translateX(5px);
-}
-
-.luxury-dropdown-item i {
-  width: 20px;
-  color: #d4af37;
-}
-
-.dropdown-header {
-  color: #d4af37 !important;
-  font-weight: 600;
-  padding: 0.5rem 1.5rem;
-  font-size: 0.9rem;
-}
-
-.luxury-divider {
-  border-color: rgba(212, 175, 55, 0.2);
-  margin: 0.5rem 1rem;
-}
-
-/* أزرار التسجيل والدخول */
-.btn-luxury {
-  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
-  border: none;
-  color: #000;
-  font-weight: 600;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-}
-
-.btn-luxury:hover {
-  color: #000;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-}
-
-.btn-outline-luxury {
-  border: 2px solid rgba(212, 175, 55, 0.6);
-  color: #d4af37 !important;
-  background: rgba(212, 175, 55, 0.1);
-  font-weight: 600;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-}
-
-.btn-outline-luxury:hover {
-  background: rgba(212, 175, 55, 0.2);
-  color: #d4af37 !important;
-  border-color: #d4af37;
-  transform: translateY(-2px);
-}
-
-/* تجاوب الموبايل */
-@media (max-width: 991.98px) {
-  .luxury-navbar {
-    padding: 1rem 0;
-  }
-  
-  .navbar-collapse {
-    background: rgba(15, 15, 30, 0.98);
-    backdrop-filter: blur(20px);
-    border-radius: 15px;
-    margin-top: 1rem;
-    padding: 1rem;
-    border: 1px solid rgba(212, 175, 55, 0.2);
-  }
-  
-  .luxury-nav-link {
-    margin: 0.3rem 0;
-    text-align: center;
-  }
-  
-  .btn-luxury,
-  .btn-outline-luxury {
-    width: 100%;
-    margin: 0.3rem 0;
-  }
-  
-  .luxury-dropdown-menu {
-    background: rgba(20, 20, 40, 0.95);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    margin-top: 0.5rem;
-  }
-  
-  .brand-tagline {
-    display: none;
-  }
-}
-
-/* تأثيرات التمرير */
-.luxury-navbar.navbar-scrolled {
-  background: rgba(5, 5, 15, 0.98) !important;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
-}
-</style>
   <!-- المحتوى الرئيسي -->
   <main class="main-content" style="margin-top: 80px; min-height: calc(100vh - 160px); padding: 2rem 0;">
     <div class="container">
@@ -829,8 +523,5 @@
 </body>
 
 </html>
-
-
-
 
 
