@@ -258,6 +258,11 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.focused {
+  transform: scale(1.01);
+  transition: transform 0.2s ease;
+}
 </style>
 
 <script>
@@ -267,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const submitBtn = document.getElementById('submitBtn');
   const carBrand = document.getElementById('carBrand');
   const carModel = document.getElementById('carModel');
-  const form = document.getElementById('bookingForm');
+  const bookingForm = document.getElementById('bookingForm');
   const timeSelect = document.querySelector('select[name="time"]');
 
   // تعيين الحد الأدنى للتاريخ (اليوم)
@@ -315,10 +320,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // مستمع تغيير التاريخ
   dateInput.addEventListener('change', function() {
     checkFriday();
     
-    // تحديث الأوقات المحجوزة
     const selectedDate = this.value;
     if (selectedDate) {
       fetch(`/api/booked-slots/${selectedDate}`)
@@ -328,6 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // فحص أولي للجمعة
   checkFriday();
 
   // تحديث موديلات السيارة
@@ -335,8 +341,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedBrand = this.value;
     const modelField = document.getElementById('carModel');
     const datalist = document.getElementById('carModelsList');
-    
-    console.log('Selected brand:', selectedBrand);
     
     if (!selectedBrand) {
         modelField.value = '';
@@ -350,19 +354,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fetch(`/api/car-models/${encodeURIComponent(selectedBrand)}`)
         .then(response => {
-            console.log('Response status:', response.status);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             return response.json();
         })
         .then(models => {
-            console.log('Models received:', models);
-            
-            // مسح الخيارات السابقة
             datalist.innerHTML = '';
             
-            // إضافة الموديلات الجديدة
             models.forEach(model => {
                 const option = document.createElement('option');
                 option.value = model;
@@ -372,8 +371,6 @@ document.addEventListener('DOMContentLoaded', function() {
             modelField.placeholder = 'اختر أو اكتب الموديل';
             modelField.disabled = false;
             modelField.focus();
-            
-            console.log('Models loaded successfully');
         })
         .catch(error => {
             console.error('Error loading models:', error);
@@ -383,86 +380,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
   });
 
-  // تأثير الإرسال
-  form.addEventListener('submit', function(e) {
-    if (!submitBtn.disabled) {
-      form.classList.add('form-loading');
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري الحجز...';
-      submitBtn.disabled = true;
-    }
-  });
+  // تأثير الإرسال - محسن ومبسط
+  if (bookingForm && submitBtn) {
+    bookingForm.addEventListener('submit', function(e) {
+      if (!submitBtn.disabled) {
+        bookingForm.classList.add('form-loading');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري الحجز...';
+        submitBtn.disabled = true;
+      }
+    });
+  }
 
   // تحسين تجربة المستخدم
   const inputs = document.querySelectorAll('input, select, textarea');
-  inputs.forEach(input => {
-    input.addEventListener('focus', function() {
-      this.parentElement.classList.add('focused');
-    });
-    
-    input.addEventListener('blur', function() {
-      this.parentElement.classList.remove('focused');
-    });
-  });
-});
-</script>
-  // تأثير الإرسال
-  form.addEventListener('submit', function(e) {
-    if (!submitBtn.disabled) {
-      form.classList.add('form-loading');
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري الحجز...';
-      submitBtn.disabled = true;
-    }
-  });
-
-  // تحسين تجربة المستخدم
-  const inputs = document.querySelectorAll('input, select, textarea');
-  inputs.forEach(input => {
-    input.addEventListener('focus', function() {
-      this.parentElement.classList.add('focused');
-    });
-    
-    input.addEventListener('blur', function() {
-      this.parentElement.classList.remove('focused');
-    });
-  });
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const bookedSlots = {{ booked_slots | tojson | safe }};
-    const dateInput = document.getElementById('dateInput');
-    const timeSelect = document.querySelector('select[name="time"]');
-    
-    function updateAvailableSlots() {
-        // إعادة تعيين جميع الخيارات للحالة العادية
-        Array.from(timeSelect.options).forEach(option => {
-            option.disabled = false;
-            option.style.color = '';
-            option.style.backgroundColor = '';
-            option.text = option.value;
-        });
-        
-        // تلوين الأوقات المحجوزة
-        if (bookedSlots && bookedSlots.length > 0) {
-            Array.from(timeSelect.options).forEach(option => {
-                if (bookedSlots.includes(option.value)) {
-                    option.disabled = true;
-                    option.style.color = '#999';
-                    option.style.backgroundColor = '#f5f5f5';
-                    option.text = option.value + ' (محجوز)';
-                }
-            });
+  if (inputs.length > 0) {
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        if (this.parentElement) {
+          this.parentElement.classList.add('focused');
         }
-    }
-    
-    // تطبيق التلوين عند تحميل الصفحة
-    updateAvailableSlots();
-    
-    // تحديث الأوقات عند تغيير التاريخ
-    dateInput.addEventListener('change', function() {
-        // هنا يمكن إضافة AJAX لجلب الأوقات المحجوزة للتاريخ الجديد
-        updateAvailableSlots();
+      });
+      
+      input.addEventListener('blur', function() {
+        if (this.parentElement) {
+          this.parentElement.classList.remove('focused');
+        }
+      });
     });
+  }
+
+  // معالجة الأوقات المحجوزة من الخادم
+  const bookedSlots = {{ booked_slots | tojson | safe }};
+  if (bookedSlots && bookedSlots.length > 0) {
+    updateAvailableSlots(bookedSlots);
+  }
 });
 </script>
 {% endblock %}
