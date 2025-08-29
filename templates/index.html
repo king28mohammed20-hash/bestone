@@ -5,9 +5,9 @@
 <div class="container my-4">
 
   <!-- Hero Section -->
-  <div class="hero-section text-center py-5 mb-5 interactive" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 2rem; color: white;">
+  <div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 2rem; color: white;">
     <div class="container">
-      <h1 class="display-4 fw-bold mb-3 gradient-text" style="color: white !important;">مرحباً بك في Best One</h1>
+      <h1 class="display-4 fw-bold mb-3" style="color: white !important;">مرحباً بك في Best One</h1>
       <p class="lead mb-4" style="color: white !important;">أفضل خدمات السيارات في المملكة</p>
       {% if not current_user.is_authenticated %}
       <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-3">ابدأ الآن</a>
@@ -249,6 +249,5 @@
 
 
 {% endblock %}
-
 
 
