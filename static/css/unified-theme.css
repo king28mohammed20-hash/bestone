@@ -788,3 +788,34 @@ body {
     transform: scale(1.02);
   }
 }
+
+
+
+/* إصلاح عرض الجداول على الموبايل */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .table {
+    min-width: 600px; /* عرض أدنى للجدول */
+    font-size: 0.85rem;
+  }
+  
+  .table td, 
+  .table th {
+    padding: 0.6rem 0.4rem;
+    white-space: nowrap; /* منع كسر النص */
+  }
+  
+  /* توزيع عرض الأعمدة */
+  .table th:nth-child(2), /* عمود الخدمة */
+  .table td:nth-child(2) {
+    min-width: 150px;
+  }
+  
+  .table th:nth-child(3), /* عمود السيارة */
+  .table td:nth-child(3) {
+    min-width: 130px;
+  }
+}
