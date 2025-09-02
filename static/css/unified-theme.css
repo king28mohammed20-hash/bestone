@@ -44,6 +44,26 @@
   --transition-slow: all 0.5s ease;
 }
 
+
+/* إخفاء الزر القديم نهائياً */
+.theme-toggle {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* حذف كل الأجزاء المتعلقة بالزر القديم */
+.theme-toggle::after,
+.theme-toggle::before {
+  display: none !important;
+}
+
+
+
+
+
+
 /* الوضع الليلي */
 [data-theme="dark"] {
   --bg-primary: #0f172a;
@@ -953,6 +973,7 @@ body.scrolling .theme-toggle-floating {
 }
 */
 </style>
+
 
 
 
