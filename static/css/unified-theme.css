@@ -1017,9 +1017,18 @@ button[onclick*="scrollTo"] {
 
 
 
-/* عرض الصور كاملة في العروض */
-.carousel-item img { object-fit: contain !important; }
+/* عرض الصور كاملة في العروض 
+.carousel-item img { object-fit: contain !important; }*/
 
+/* عرض الصور كاملة بدون مط */
+.carousel-item img { 
+  object-fit: contain !important; 
+  width: auto !important; 
+  max-width: 100% !important; 
+  height: 100% !important; 
+  margin: 0 auto !important;
+  display: block !important;
+}
 
 
 
