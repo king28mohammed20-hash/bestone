@@ -854,7 +854,7 @@ body {
 .theme-toggle-floating {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 90px;
   width: 55px;
   height: 55px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -908,7 +908,7 @@ body {
 @media (max-width: 768px) {
   .theme-toggle-floating {
     bottom: 90px; /* فوق أزرار التنقل في الموبايل */
-    right: 15px;
+    right: 75px;
     width: 50px;
     height: 50px;
     font-size: 20px;
@@ -973,6 +973,7 @@ body.scrolling .theme-toggle-floating {
 }
 */
 </style>
+
 
 
 
