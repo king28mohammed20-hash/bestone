@@ -1017,27 +1017,8 @@ button[onclick*="scrollTo"] {
 
 
 
-/* إصلاح عرض صور العروض */
-.carousel-item img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  background: #f8f9fa !important;
-}
 
-.carousel-inner {
-  height: 350px !important;
-  background: #f8f9fa !important;
-}
 
-.carousel-item {
-  height: 100% !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
 
 
 
