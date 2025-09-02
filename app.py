@@ -741,7 +741,7 @@ class ServiceForm(FlaskForm):
 class OfferForm(FlaskForm):
     title = StringField("عنوان الإعلان", validators=[DataRequired(), Length(min=2, max=160)])
     description = TextAreaField("الوصف")
-    price = DecimalField("السعر (اختياري)", places=2)
+    price = DecimalField("السعر (اختياري)", validators=[Optional()],places=2)
     service_id = SelectField("يرتبط بخدمة (اختياري)", coerce=int, choices=[(0, "بدون")])
     active = BooleanField("مُفَعَّل", default=True)
     image = FileField("صورة الإعلان (jpg/png)")
@@ -1630,4 +1630,5 @@ with app.app_context():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
