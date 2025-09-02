@@ -1019,25 +1019,31 @@ button[onclick*="scrollTo"] {
 
 
 /* إصلاح شامل للعروض */
-.carousel-inner {
+/* الحل النهائي للعروض - لا تمسحوه! */
+div[id="offersCarousel"] .carousel-inner {
   height: 350px !important;
+  background: #f8f9fa !important;
 }
 
-.carousel-item {
-  height: 100% !important;
+div[id="offersCarousel"] .carousel-item {
+  height: 350px !important;
+  overflow: hidden !important;
 }
 
-.carousel-item img {
+div[id="offersCarousel"] .carousel-item a {
+  display: block !important;
+  height: 350px !important;
   width: 100% !important;
-  height: 100% !important;
+}
+
+div[id="offersCarousel"] .carousel-item img {
+  width: 100% !important;
+  height: 350px !important;
   object-fit: cover !important;
   object-position: center !important;
+  display: block !important;
 }
 
-.carousel-item a {
-  display: block !important;
-  height: 100% !important;
-}
 
 
 
