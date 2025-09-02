@@ -1020,13 +1020,26 @@ button[onclick*="scrollTo"] {
 }
 
 
+
+
+
+/* إصلاح شامل للعروض */
+.carousel-inner {
+  height: 350px !important;
+}
+
+.carousel-item {
+  height: 100% !important;
+}
+
 .carousel-item img {
   width: 100% !important;
-  height: 350px !important;
+  height: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
-  background: #f8f9fa !important;
 }
+
+
 
 
 
