@@ -1017,6 +1017,8 @@ button[onclick*="scrollTo"] {
 
 
 
+/* عرض الصور كاملة في العروض */
+.carousel-item img { object-fit: contain !important; }
 
 
 
