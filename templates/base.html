@@ -520,15 +520,47 @@
       });
     });
   </script>
-<!-- زر الوضع الليلي العائم -->
+
+  
+  
+  
+  <!-- زر الوضع الليلي العائم -->
 <button class="theme-toggle-floating" 
         onclick="toggleTheme()" 
         title="تبديل الوضع الليلي" 
         aria-label="تبديل الوضع الليلي">
 </button>
+<script>
+// تحسين دالة toggleTheme الموجودة
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  // تأثير انيميشن للزر عند التغيير
+  const btn = document.querySelector('.theme-toggle-floating');
+  if (btn) {
+    btn.style.transform = 'scale(0.8)';
+    setTimeout(() => {
+      btn.style.transform = '';
+    }, 150);
+  }
+  
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+}
+
+// تطبيق الثيم المحفوظ عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+});
+</script>
+
+
 </body>
 
 </html>
+
 
 
 
