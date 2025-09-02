@@ -34,29 +34,13 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <!-- اللوغو مع الشعار في الأعلى -->
-       <!-- <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
         <img src="{{ url_for('static', filename='logo.png') }}" 
              alt="Best One Logo" 
              style="height: 50px; width: auto; max-width: 100px; object-fit: contain; filter: none;">
         <span class="fw-bold">Best One</span>
-      </a> -->
-      <div class="d-flex align-items-center">
-  <!-- الشعار -->
-  <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
-    <img src="{{ url_for('static', filename='logo.png') }}" 
-         alt="Best One Logo" 
-         style="height: 50px; width: auto; max-width: 100px; object-fit: contain; filter: none;">
-    <span class="fw-bold">Best One</span>
-  </a>
-  
-  <!-- زر الوضع الليلي الجديد -->
-  <button class="navbar-theme-toggle ms-3" 
-          onclick="toggleTheme()" 
-          title="تبديل الوضع الليلي"
-          aria-label="تبديل الوضع الليلي">
-    <span class="visually-hidden">تبديل الوضع الليلي</span>
-  </button>
-</div>
+      </a> 
+      
       <!-- زر القائمة للموبايل -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
@@ -539,6 +523,7 @@
 </body>
 
 </html>
+
 
 
 
