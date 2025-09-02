@@ -44,26 +44,6 @@
   --transition-slow: all 0.5s ease;
 }
 
-
-/* إخفاء الزر القديم نهائياً */
-.theme-toggle {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* حذف كل الأجزاء المتعلقة بالزر القديم */
-.theme-toggle::after,
-.theme-toggle::before {
-  display: none !important;
-}
-
-
-
-
-
-
 /* الوضع الليلي */
 [data-theme="dark"] {
   --bg-primary: #0f172a;
@@ -92,40 +72,7 @@ body {
   line-height: 1.7;
   font-weight: 400;
   transition: var(--transition-smooth);
-  padding-top: 80px; /* تعويض النافبار الثابت */
-}
-
-/* ===== زر التبديل للوضع الليلي ===== */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  left: 90px;
-  z-index: 1050;
-  width: 50px;
-  height: 25px;
-  background: var(--gradient-luxury);
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  display: flex;
-  align-items: center;
-  padding: 2px;
-  box-shadow: var(--shadow-md);
-}
-
-.theme-toggle::after {
-  content: '';
-  width: 21px;
-  height: 21px;
-  background: #ffffff;
-  border-radius: 50%;
-  transition: var(--transition-smooth);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-[data-theme="dark"] .theme-toggle::after {
-  transform: translateX(25px);
+  padding-top: 80px;
 }
 
 /* ===== النافبار ===== */
@@ -448,7 +395,7 @@ body {
   transform: scale(1.01);
 }
 
-/* ===== السلايدر/الكاروسيل ===== */
+/* ===== العروض - الحل النهائي ===== */
 .carousel {
   border-radius: var(--radius-xl);
   overflow: hidden;
@@ -456,13 +403,15 @@ body {
 }
 
 .carousel-inner {
-  border-radius: var(--radius-xl);
-  height: 400px;
+  height: 350px;
+  background: #ffffff;
 }
 
 .carousel-item {
-  height: 100%;
-  background: #ffffff;
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-item img {
@@ -471,11 +420,6 @@ body {
   object-fit: contain;
   object-position: center;
   background: #ffffff;
-  transition: var(--transition-slow);
-}
-
-.carousel-item:hover img {
-  transform: scale(1.02);
 }
 
 .carousel-caption {
@@ -716,26 +660,68 @@ body {
   transform: translateY(-2px);
 }
 
+/* ===== زر التبديل للوضع الليلي العائم ===== */
+.theme-toggle-floating {
+  position: fixed;
+  bottom: 20px;
+  right: 90px;
+  width: 55px;
+  height: 55px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 22px;
+}
+
+.theme-toggle-floating:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+.theme-toggle-floating:active {
+  transform: translateY(-1px) scale(0.95);
+}
+
+.theme-toggle-floating::after {
+  content: '🌙';
+  font-size: 22px;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .theme-toggle-floating::after {
+  content: '☀️';
+}
+
+[data-theme="dark"] .theme-toggle-floating {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+[data-theme="dark"] .theme-toggle-floating:hover {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.theme-toggle-floating:focus {
+  outline: 3px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .theme-toggle-floating:focus {
+  outline-color: rgba(0, 0, 0, 0.4);
+}
+
 /* ===== تجاوب الموبايل ===== */
 @media (max-width: 768px) {
   body {
     padding-top: 70px;
-  }
-  
-  .theme-toggle {
-    top: 15px;
-    left: 70px;
-    width: 45px;
-    height: 22px;
-  }
-  
-  .theme-toggle::after {
-    width: 18px;
-    height: 18px;
-  }
-  
-  [data-theme="dark"] .theme-toggle::after {
-    transform: translateX(23px);
   }
   
   .social-float-container {
@@ -755,7 +741,11 @@ body {
   }
   
   .carousel-inner {
-    height: 250px;
+    height: 280px;
+  }
+  
+  .carousel-item {
+    height: 280px;
   }
   
   .carousel-caption {
@@ -780,6 +770,31 @@ body {
   .navbar-brand {
     font-size: 1.25rem;
   }
+  
+  .theme-toggle-floating {
+    bottom: 90px;
+    right: 75px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .theme-toggle-floating::after {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle-floating {
+    bottom: 80px;
+    right: 12px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .theme-toggle-floating::after {
+    font-size: 18px;
+  }
 }
 
 /* ===== تحسينات الأداء ===== */
@@ -794,7 +809,6 @@ body {
   }
 }
 
-/* تحسين الأداء على الأجهزة الضعيفة */
 @media (max-width: 768px) {
   .card:hover {
     transform: none;
@@ -809,247 +823,60 @@ body {
   }
 }
 
-
-
-/* إصلاح عرض الجداول على الموبايل */
+/* ===== إصلاح عرض الجداول على الموبايل ===== */
 @media (max-width: 768px) {
   .table-responsive {
     overflow-x: auto;
   }
   
   .table {
-    min-width: 600px; /* عرض أدنى للجدول */
+    min-width: 600px;
     font-size: 0.85rem;
   }
   
   .table td, 
   .table th {
     padding: 0.6rem 0.4rem;
-    white-space: nowrap; /* منع كسر النص */
+    white-space: nowrap;
   }
   
-  /* توزيع عرض الأعمدة */
-  .table th:nth-child(2), /* عمود الخدمة */
+  .table th:nth-child(2),
   .table td:nth-child(2) {
     min-width: 150px;
   }
   
-  .table th:nth-child(3), /* عمود السيارة */
+  .table th:nth-child(3),
   .table td:nth-child(3) {
     min-width: 130px;
   }
-}
-
-
-
-
-
-<style>
-/* إخفاء الزر القديم نهائياً */
-.theme-toggle {
-  display: none !important;
-}
-
-/* الزر العائم الجديد */
-.theme-toggle-floating {
-  position: fixed;
-  bottom: 20px;
-  right: 90px;
-  width: 55px;
-  height: 55px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  z-index: 1050;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  color: white;
-  font-size: 22px;
-}
-
-/* تأثيرات الهوفر */
-.theme-toggle-floating:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
-}
-
-/* تأثير الضغط */
-.theme-toggle-floating:active {
-  transform: translateY(-1px) scale(0.95);
-}
-
-/* الأيقونة */
-.theme-toggle-floating::after {
-  content: '🌙';
-  font-size: 22px;
-  transition: all 0.3s ease;
-}
-
-/* تغيير الأيقونة في الوضع الليلي */
-[data-theme="dark"] .theme-toggle-floating::after {
-  content: '☀️';
-}
-
-/* خلفية مختلفة في الوضع الليلي */
-[data-theme="dark"] .theme-toggle-floating {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
-
-[data-theme="dark"] .theme-toggle-floating:hover {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-}
-
-/* ===== تحسينات للموبايل ===== */
-@media (max-width: 768px) {
-  .theme-toggle-floating {
-    bottom: 90px; /* فوق أزرار التنقل في الموبايل */
-    right: 75px;
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
+  
+  .table .btn {
+    width: auto !important;
+    display: inline-flex;
+    align-items: center;
   }
   
-  .theme-toggle-floating::after {
-    font-size: 20px;
+  .table td.actions,
+  .table td.text-nowrap { 
+    white-space: nowrap;
   }
 }
 
-/* للشاشات الصغيرة جداً */
-@media (max-width: 480px) {
-  .theme-toggle-floating {
-    bottom: 80px;
-    right: 12px;
-    width: 45px;
-    height: 45px;
-  }
-  
-  .theme-toggle-floating::after {
-    font-size: 18px;
-  }
-}
-
-/* تحسين الوصولية */
-.theme-toggle-floating:focus {
-  outline: 3px solid rgba(255, 255, 255, 0.6);
-  outline-offset: 2px;
-}
-
-[data-theme="dark"] .theme-toggle-floating:focus {
-  outline-color: rgba(0, 0, 0, 0.4);
-}
-
-/* تأثير النبضة للفت الانتباه (اختياري) */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-/* يمكن تفعيل هذا لجعل الزر ينبض في البداية */
-/*
-.theme-toggle-floating.first-visit {
-  animation: pulse 2s ease-in-out 3;
-}
-*/
-
-/* تحسين للوضع العمودي على التابلت */
-@media (max-width: 1024px) and (orientation: portrait) {
-  .theme-toggle-floating {
-    bottom: 25px;
-    right: 18px;
-  }
-}
-
-/* إخفاء مؤقت عند التمرير (تأثير اختياري) */
-/*
-body.scrolling .theme-toggle-floating {
-  opacity: 0.7;
-  transform: scale(0.9);
-}
-*/
-</style>
-
-/* في نهاية الملف قبل آخر } */
-
-/* تحريك زر العودة للأعلى لفوق شوي */
+/* ===== تحريك أزرار العودة للأعلى ===== */
 .scroll-to-top,
 .back-to-top,
 .scroll-top-btn,
 [class*="scroll"][class*="top"],
 button[onclick*="scrollTo"] {
-  bottom: 90px !important; /* بدلاً من 20px أو 30px */
+  bottom: 90px !important;
 }
 
-/* للموبايل */
 @media (max-width: 768px) {
   .scroll-to-top,
   .back-to-top,
   .scroll-top-btn,
   [class*="scroll"][class*="top"],
   button[onclick*="scrollTo"] {
-    bottom: 80px !important; /* أعلى أكثر للموبايل */
+    bottom: 80px !important;
   }
 }
-
-
-
-
-
-/* إصلاح تمدّد الأزرار داخل الجداول على الشاشات الصغيرة فقط */
-@media (max-width: 768px) {
-  .table .btn {
-    width: auto !important;     /* يلغي أي width:100% موروثة */
-    display: inline-flex;
-    align-items: center;
-  }
-  /* لتفادي نزول النص لسطر جديد في خلية الإجراءات */
-  .table td.actions,
-  .table td.text-nowrap { 
-    white-space: nowrap;        /* يخلي "تعديل" و"حذف" جنب بعض */
-  }
-}
-
-
-
-
-
-/* إصلاح شامل للعروض */
-/* الحل النهائي للعروض - لا تمسحوه! */
-div[id="offersCarousel"] .carousel-inner {
-  height: 350px !important;
-  background: #f8f9fa !important;
-}
-
-div[id="offersCarousel"] .carousel-item {
-  height: 350px !important;
-  overflow: hidden !important;
-}
-
-div[id="offersCarousel"] .carousel-item a {
-  display: block !important;
-  height: 350px !important;
-  width: 100% !important;
-}
-
-div[id="offersCarousel"] .carousel-item img {
-  width: 100% !important;
-  height: 350px !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  display: block !important;
-}
-
-
-
-
-
-
-
-
-
-
