@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore", message="Using the in-memory storage")
 limiter = Limiter(
     app=app,
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
+    default_limits=["20000 per day", "5000 per hour"]
 )
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -1630,5 +1630,6 @@ with app.app_context():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
 
