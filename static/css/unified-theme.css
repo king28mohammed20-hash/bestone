@@ -741,11 +741,11 @@ body {
   }
   
   .carousel-inner {
-    height: 280px;
+    height: 250px;
   }
   
   .carousel-item {
-    height: 280px;
+    height: 250px;
   }
   
   .carousel-caption {
@@ -880,3 +880,7 @@ button[onclick*="scrollTo"] {
     bottom: 80px !important;
   }
 }
+
+
+/* حل بسيط لمشكلة الصور */
+.carousel-item img { object-fit: cover !important; }
