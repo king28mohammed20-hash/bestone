@@ -824,3 +824,135 @@ body {
 
 
 
+<style>
+/* إخفاء الزر القديم نهائياً */
+.theme-toggle {
+  display: none !important;
+}
+
+/* الزر العائم الجديد */
+.theme-toggle-floating {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 22px;
+}
+
+/* تأثيرات الهوفر */
+.theme-toggle-floating:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+/* تأثير الضغط */
+.theme-toggle-floating:active {
+  transform: translateY(-1px) scale(0.95);
+}
+
+/* الأيقونة */
+.theme-toggle-floating::after {
+  content: '🌙';
+  font-size: 22px;
+  transition: all 0.3s ease;
+}
+
+/* تغيير الأيقونة في الوضع الليلي */
+[data-theme="dark"] .theme-toggle-floating::after {
+  content: '☀️';
+}
+
+/* خلفية مختلفة في الوضع الليلي */
+[data-theme="dark"] .theme-toggle-floating {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+[data-theme="dark"] .theme-toggle-floating:hover {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+/* ===== تحسينات للموبايل ===== */
+@media (max-width: 768px) {
+  .theme-toggle-floating {
+    bottom: 90px; /* فوق أزرار التنقل في الموبايل */
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .theme-toggle-floating::after {
+    font-size: 20px;
+  }
+}
+
+/* للشاشات الصغيرة جداً */
+@media (max-width: 480px) {
+  .theme-toggle-floating {
+    bottom: 80px;
+    right: 12px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .theme-toggle-floating::after {
+    font-size: 18px;
+  }
+}
+
+/* تحسين الوصولية */
+.theme-toggle-floating:focus {
+  outline: 3px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .theme-toggle-floating:focus {
+  outline-color: rgba(0, 0, 0, 0.4);
+}
+
+/* تأثير النبضة للفت الانتباه (اختياري) */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* يمكن تفعيل هذا لجعل الزر ينبض في البداية */
+/*
+.theme-toggle-floating.first-visit {
+  animation: pulse 2s ease-in-out 3;
+}
+*/
+
+/* تحسين للوضع العمودي على التابلت */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .theme-toggle-floating {
+    bottom: 25px;
+    right: 18px;
+  }
+}
+
+/* إخفاء مؤقت عند التمرير (تأثير اختياري) */
+/*
+body.scrolling .theme-toggle-floating {
+  opacity: 0.7;
+  transform: scale(0.9);
+}
+*/
+</style>
+
+
+
