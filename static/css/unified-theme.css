@@ -974,6 +974,28 @@ body.scrolling .theme-toggle-floating {
 */
 </style>
 
+/* في نهاية الملف قبل آخر } */
+
+/* تحريك زر العودة للأعلى لفوق شوي */
+.scroll-to-top,
+.back-to-top,
+.scroll-top-btn,
+[class*="scroll"][class*="top"],
+button[onclick*="scrollTo"] {
+  bottom: 90px !important; /* بدلاً من 20px أو 30px */
+}
+
+/* للموبايل */
+@media (max-width: 768px) {
+  .scroll-to-top,
+  .back-to-top,
+  .scroll-top-btn,
+  [class*="scroll"][class*="top"],
+  button[onclick*="scrollTo"] {
+    bottom: 160px !important; /* أعلى أكثر للموبايل */
+  }
+}
+
 
 
 
