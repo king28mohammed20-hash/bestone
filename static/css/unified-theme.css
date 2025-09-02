@@ -1000,4 +1000,22 @@ button[onclick*="scrollTo"] {
 
 
 
+/* إصلاح تمدّد الأزرار داخل الجداول على الشاشات الصغيرة فقط */
+@media (max-width: 768px) {
+  .table .btn {
+    width: auto !important;     /* يلغي أي width:100% موروثة */
+    display: inline-flex;
+    align-items: center;
+  }
+  /* لتفادي نزول النص لسطر جديد في خلية الإجراءات */
+  .table td.actions,
+  .table td.text-nowrap { 
+    white-space: nowrap;        /* يخلي "تعديل" و"حذف" جنب بعض */
+  }
+}
+
+
+
+
+
 
