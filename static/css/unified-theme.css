@@ -992,9 +992,10 @@ button[onclick*="scrollTo"] {
   .scroll-top-btn,
   [class*="scroll"][class*="top"],
   button[onclick*="scrollTo"] {
-    bottom: 160px !important; /* أعلى أكثر للموبايل */
+    bottom: 80px !important; /* أعلى أكثر للموبايل */
   }
 }
+
 
 
 
