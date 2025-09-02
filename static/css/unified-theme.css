@@ -1014,6 +1014,10 @@ button[onclick*="scrollTo"] {
   }
 }
 
+.carousel-item img {
+  height: 350px !important;
+  object-fit: cover !important;
+}
 
 
 
