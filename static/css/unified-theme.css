@@ -1014,11 +1014,6 @@ button[onclick*="scrollTo"] {
   }
 }
 
-.carousel-item img {
-  height: 350px !important;
-  object-fit: cover !important;
-}
-
 
 
 
@@ -1039,6 +1034,10 @@ button[onclick*="scrollTo"] {
   object-position: center !important;
 }
 
+.carousel-item a {
+  display: block !important;
+  height: 100% !important;
+}
 
 
 
