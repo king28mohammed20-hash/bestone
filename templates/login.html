@@ -14,5 +14,10 @@
     {% for e in form.password.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
   </div>
   {{ form.submit(class="btn btn-primary") }}
+  <div class="mt-3 text-center">
+          <small class="text-muted">
+            ليس لديك حساب؟ <a href="{{ url_for('register') }}">إنشاء حساب جديد</a>
+          </small>
+        </div>
 </form>
 {% endblock %}
